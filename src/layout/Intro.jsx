@@ -1,27 +1,29 @@
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 
 // Video
 import introVideo from "../assets/videos/bannerVideo.mp4";
 
 // Icon
-import arrowBottom from "../assets/icons/arrow-bottom.svg";
 import logo from "../assets/icons/logo.svg";
 
-gsap.registerPlugin(ScrollTrigger);
+// Layout
+import Video from "./Video";
+
+// Util
+import { initScroll } from "../utils/scrollSetup";
+import { useRef } from "react";
 
 const Intro = () => {
-  const lenis = new Lenis();
-  lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
-  gsap.ticker.lagSmoothing(0);
+  const videoRef = useRef(null);
 
-  useGSAP(() => {
+  const lenis = initScroll();
+
+  const initialAnimation = () => {
     gsap.from(".hero-main-container", {
-      scale: 1.45,
-      duration: 2.8,
+      scale: 1.5,
+      duration: 3,
       ease: "power3.out",
     });
 
@@ -34,24 +36,9 @@ const Intro = () => {
         document.body.style.overflowX = "hidden";
       },
     });
+  };
 
-    // Scroll Indicator Animation
-    const scrollIndicator = document.querySelector(".scroll-indicator");
-    if (scrollIndicator) {
-      const bounceTimeline = gsap.timeline({
-        repeat: -1,
-        yoyo: true,
-      });
-
-      bounceTimeline.to(scrollIndicator, {
-        y: 20,
-        opacity: 0.6,
-        duration: 0.8,
-        ease: "power1.inOut",
-      });
-    }
-
-    // Main ScrollTrigger Timeline
+  const timelineAnimation = () => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: ".container",
@@ -63,12 +50,9 @@ const Intro = () => {
       },
     });
 
-    // Set initial scale to prevent flickers
     tl.set(".hero-main-container", {
       scale: 1.25,
-    });
-
-    tl.to(".hero-main-container", {
+    }).to(".hero-main-container", {
       scale: 1,
       duration: 1,
     });
@@ -80,9 +64,7 @@ const Intro = () => {
         duration: 0.5,
       },
       "<"
-    );
-
-    tl.to(
+    ).to(
       ".hero-main-image",
       {
         opacity: 0,
@@ -141,9 +123,7 @@ const Intro = () => {
     );
 
     tl.set(".hero-main-container", { opacity: 0 });
-    tl.to(".hero-1-container", { scale: 0.85, duration: 3 }, "<-=3");
-
-    tl.set(
+    tl.to(".hero-1-container", { scale: 0.85, duration: 3 }, "<-=3").set(
       ".hero-1-container",
       {
         maskImage: `radial-gradient(circle at 50% 16.1137vh, rgb(0, 0, 0) 96.1949vh, rgba(0, 0, 0, 0) 112.065vh)`,
@@ -164,45 +144,42 @@ const Intro = () => {
       ".hero-text-logo",
       {
         opacity: 0,
-        duration: 2,
+        duration: 1.5,
       },
       "<1.5"
     );
 
-    tl.set(".hero-1-container", { opacity: 0 });
-    tl.set(".hero-2-container", { visibility: "visible" });
-    tl.to(".hero-2-container", { opacity: 1, duration: 3 }, "<+=0.2");
+    tl.to(
+      videoRef.current,
+      {
+        position: "fixed",
+        opacity: 1,
+        duration: 8,
+        ease: "power2.out",
+        delay: 1
+      },
+      "<+=3"
+    ).to(videoRef.current, { scale: 0.9, duration: 2, });
+  };
 
-    tl.fromTo(
-      ".hero-2-container",
-      {
-        backgroundImage: `radial-gradient(
-          circle at 50% 200vh,
-          rgba(255, 214, 135, 0) 0,
-          rgba(157, 47, 106, 0.5) 90vh,
-          rgba(157, 47, 106, 0.8) 120vh,
-          rgba(32, 31, 66, 0) 150vh
-        )`,
-      },
-      {
-        backgroundImage: `radial-gradient(circle at 50% 3.9575vh, rgb(255, 213, 133) 0vh,
-         rgb(247, 77, 82) 50.011vh,
-          rgb(145, 42, 105) 90.0183vh,
-           rgba(32, 31, 66, 0) 140.599vh)`,
-        duration: 3,
-      },
-      "<1.2"
-    );
+  useGSAP(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    initialAnimation();
+    timelineAnimation();
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      if (lenis && lenis.destroy) {
+        lenis.destroy();
+      }
     };
-  }, []);
+  }, [lenis]);
 
   return (
     <div className="container min-w-screen overflow-hidden min-h-screen relative bg-gradient-to-br from-[#1c1829] via-[#1b1828] via-[#191724] via-[#161520] via-[#14131c] via-[#121218] to-[#111117]">
       {/* Overlay */}
-      <div className="overlay fixed inset-0 bg-black z-10 pointer-events-none"></div>
+      <div className="overlay overflow-hidden fixed inset-0 bg-black z-10 pointer-events-none"></div>
 
       {/* Hero 1 Container */}
       <div className="hero-1-container w-full h-screen relative">
@@ -231,7 +208,7 @@ const Intro = () => {
         <div className="hero-text-logo-container w-full h-screen absolute inset-0 -z-10 bg-transparent flex flex-col gap-16 justify-center items-center">
           <div>
             <h3
-              className="hero-text text-[#ffb0c4] text-center uppercase text-4xl sm:text-5xl lg:text-6xl leading-[0.85] mt-0 w-full"
+              className="hero-text text-[#ffb0c4] text-center uppercase text-4xl sm:text-5xl lg:text-6xl leading-[0.85] mt-0 w-full px-4"
               style={{
                 backgroundImage: `radial-gradient(
                     circle at 50% 200vh,
@@ -244,42 +221,21 @@ const Intro = () => {
                 backgroundClip: "text",
               }}
             >
-              Num futuro onde pessoas são metade máquina e metade humano,
-              cabe a você provar que ainda existe beleza, esperança e valor em
-              ser realmente humano
+              Num futuro onde pessoas são metade máquina e metade humano, cabe a
+              você provar que ainda existe beleza, esperança e valor em ser
+              realmente humano
             </h3>
           </div>
         </div>
       </div>
 
-      {/* Hero 2 Container */}
-      <div
-        className="hero-2-container w-full h-screen absolute inset-0 opacity-0 invisible flex flex-col gap-8 justify-center items-start text-left px-8 lg:px-0 lg:max-w-[60%] lg:mx-auto"
-        style={{
-          backgroundImage: `radial-gradient(
-              circle at 50% 200vh,
-              rgba(255, 214, 135, 0) 0,
-              rgba(157, 47, 106, 0.5) 90vh,
-              rgba(157, 47, 106, 0.8) 120vh,
-              rgba(32, 31, 66, 0) 150vh
-            )`,
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-        }}
-      >
-        <h3 className="text-4xl lg:text-6xl">Vice City, USA.</h3>
-        <p className="max-w-[90%] text-base lg:text-2xl">
-          Jason and Lucia have always known the deck is stacked against them.
-          But when an easy score goes wrong, they find themselves on the darkest
-          side of the sunniest place in America, in the middle of a criminal
-          conspiracy stretching across the state of Leonida — forced to rely on
-          each other more than ever if they want to make it out alive.
-        </p>
-      </div>
+      <div id="video" ref={videoRef} className="opacity-0 w-full h-screen">
+        <Video />
 
-      {/* Scroll Indicator */}
-      <div className="scroll-indicator absolute bottom-[10%] lg:bottom-8 left-1/2 transform -translate-x-1/2 w-[34px] h-[14px] z-10">
-        <img src={arrowBottom} alt="" />
+        {/* Conteúdo adicional que pode aparecer sobre o vídeo */}
+        <div className="hero-2-content relative z-10 pointer-events-none">
+          {/* Adicione aqui qualquer conteúdo que deve aparecer sobre o vídeo */}
+        </div>
       </div>
     </div>
   );
