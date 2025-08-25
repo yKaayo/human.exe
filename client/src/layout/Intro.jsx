@@ -100,8 +100,6 @@ const Intro = () => {
       "<1.2"
     );
 
-    
-
     tl.set(".hero-main-container", { opacity: 0 });
     tl.to(".hero-1-container", { scale: 0.85, duration: 3 }, "<-=3").set(
       ".hero-1-container",
@@ -119,8 +117,6 @@ const Intro = () => {
       },
       "<+=0.2"
     );
-
-   
 
     tl.to(
       videoRef.current,
