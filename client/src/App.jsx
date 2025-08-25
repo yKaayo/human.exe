@@ -1,6 +1,6 @@
 // Layout
 import Intro from "./layout/Intro";
-import Video from "./layout/Video";
+import Header from "./layout/Header";
 
 // Component
 import ScrollIndicator from "./components/ScrollIndicator";
@@ -8,8 +8,8 @@ import ScrollIndicator from "./components/ScrollIndicator";
 const App = () => {
   return (
     <>
+      <Header />
       <Intro />
-
       <ScrollIndicator />
     </>
   );

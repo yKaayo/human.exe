@@ -12,9 +12,11 @@ const Video = () => {
 
   useEffect(() => {
     const framesImages = [];
+
     for (let i = 0; i < TOTAL_FRAMES; i++) {
       const img = new Image();
       img.src = `/frames/frame_${String(i).padStart(4, "0")}.jpg`;
+
       framesImages.push(img);
     }
 
@@ -51,21 +53,16 @@ const Video = () => {
         start: "top top",
         end: `+=${TOTAL_FRAMES * 50}`,
         scrub: true,
-        pin: true
+        pin: true,
       },
-      onUpdate: render
+      onUpdate: render,
     });
 
     images[0].onload = render;
     if (images[0].complete) render();
   }, [images]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="w-screen h-dvh object-cover"
-    />
-  );
+  return <canvas ref={canvasRef} className="w-screen h-dvh object-cover" />;
 };
 
 export default Video;

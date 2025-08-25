@@ -50,21 +50,18 @@ const Intro = () => {
       },
     });
 
-    tl.set(".hero-main-container", {
-      scale: 1.25,
-    }).to(".hero-main-container", {
-      scale: 1,
-      duration: 1,
-    });
+    tl.fromTo(
+      ".hero-main-container",
+      {
+        scale: 1.3,
+      },
+      {
+        scale: 1,
+        duration: 2,
+      }
+    );
 
     tl.to(
-      ".hero-main-logo",
-      {
-        opacity: 0,
-        duration: 0.5,
-      },
-      "<"
-    ).to(
       ".hero-main-image",
       {
         opacity: 0,
@@ -103,24 +100,7 @@ const Intro = () => {
       "<1.2"
     );
 
-    // Logo purple animation
-    tl.fromTo(
-      ".hero-text-logo",
-      {
-        opacity: 0,
-        maskImage: `radial-gradient(circle at 50% 145.835%, rgb(0, 0, 0) 36.11%, rgba(0, 0, 0, 0) 68.055%)`,
-      },
-      {
-        opacity: 1,
-        maskImage: `radial-gradient(
-        circle at 50% 105.594%,
-        rgb(0, 0, 0) 62.9372%,
-        rgba(0, 0, 0, 0) 81.4686%
-      )`,
-        duration: 3,
-      },
-      "<0.2"
-    );
+    
 
     tl.set(".hero-main-container", { opacity: 0 });
     tl.to(".hero-1-container", { scale: 0.85, duration: 3 }, "<-=3").set(
@@ -140,14 +120,7 @@ const Intro = () => {
       "<+=0.2"
     );
 
-    tl.to(
-      ".hero-text-logo",
-      {
-        opacity: 0,
-        duration: 1.5,
-      },
-      "<1.5"
-    );
+   
 
     tl.to(
       videoRef.current,
@@ -156,10 +129,10 @@ const Intro = () => {
         opacity: 1,
         duration: 8,
         ease: "power2.out",
-        delay: 1
+        delay: 0.2,
       },
       "<+=3"
-    ).to(videoRef.current, { scale: 0.9, duration: 2, });
+    ).to(videoRef.current, { scale: 0.9, duration: 2 });
   };
 
   useGSAP(() => {
@@ -177,7 +150,7 @@ const Intro = () => {
   }, [lenis]);
 
   return (
-    <div className="container min-w-screen overflow-hidden min-h-screen relative bg-gradient-to-br from-[#1c1829] via-[#1b1828] via-[#191724] via-[#161520] via-[#14131c] via-[#121218] to-[#111117]">
+    <div className="container min-w-full overflow-hidden min-h-screen relative bg-gradient-to-br from-[#1c1829] via-[#1b1828] via-[#191724] via-[#161520] via-[#14131c] via-[#121218] to-[#111117]">
       {/* Overlay */}
       <div className="overlay overflow-hidden fixed inset-0 bg-black z-10 pointer-events-none"></div>
 
@@ -229,13 +202,10 @@ const Intro = () => {
         </div>
       </div>
 
-      <div id="video" ref={videoRef} className="opacity-0 w-full h-screen">
+      <div id="video" ref={videoRef} className="opacity-0 w-full h-dvh">
         <Video />
 
-        {/* Conteúdo adicional que pode aparecer sobre o vídeo */}
-        <div className="hero-2-content relative z-10 pointer-events-none">
-          {/* Adicione aqui qualquer conteúdo que deve aparecer sobre o vídeo */}
-        </div>
+        <div className="hero-2-content relative z-10 pointer-events-none"></div>
       </div>
     </div>
   );
