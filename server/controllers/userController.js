@@ -1,6 +1,6 @@
-import * as UserModel from "../models/userModel.js";
+import { findUser, createUser } from "../models/userModel.js";
 
 export const getUsers = async (req, rep) => {
-  const users = await UserModel.getUsers();
+  const users = await findUser();
   return rep.send(users);
 }

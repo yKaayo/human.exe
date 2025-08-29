@@ -1,6 +1,6 @@
 import { getConnection } from "../config/oracle.js";
 
-export const getUsers = async () => {
+export const findUser = async () => {
   const conn = await getConnection();
   try {
     const result = await conn.execute("SELECT id, name, email FROM users");
@@ -14,7 +14,7 @@ export const createUser = async (name, email) => {
   const conn = await getConnection();
   try {
     const result = await conn.execute(
-      `INSERT INTO users (name, email) VALUES (:name, :email)`,
+      `INSERT INTO cyberpunk_users (name, email) VALUES (:name, :email)`,
       [name, email],
       { autoCommit: true }
     );

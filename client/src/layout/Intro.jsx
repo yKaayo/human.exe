@@ -17,6 +17,7 @@ import { useRef } from "react";
 
 const Intro = () => {
   const videoRef = useRef(null);
+  const introRef = useRef(null);
 
   const lenis = initScroll();
 
@@ -41,12 +42,17 @@ const Intro = () => {
   const timelineAnimation = () => {
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: ".container",
+        trigger: "#intro",
         scrub: 2,
         pin: true,
         start: "top top",
-        end: "+=2000",
+        end: "+=1500",
         ease: "none",
+        onComplete: () => {
+          gsap.set("#intro", {
+            minHeight: "100vh",
+          });
+        },
       },
     });
 
@@ -58,7 +64,7 @@ const Intro = () => {
       {
         scale: 1,
         duration: 2,
-      }
+      },
     );
 
     tl.to(
@@ -67,7 +73,7 @@ const Intro = () => {
         opacity: 0,
         duration: 0.9,
       },
-      "<+=0.5"
+      "<+=0.5",
     );
 
     tl.to(
@@ -76,7 +82,7 @@ const Intro = () => {
         backgroundSize: "28vh",
         duration: 1.5,
       },
-      "<+=0.2"
+      "<+=0.2",
     );
 
     tl.fromTo(
@@ -85,19 +91,19 @@ const Intro = () => {
         backgroundImage: `radial-gradient(
           circle at 50% 200vh,
           rgba(255, 214, 135, 0) 0,
-          rgba(157, 47, 106, 0.5) 90vh,
-          rgba(157, 47, 106, 0.8) 120vh,
+          rgba(0, 255, 242, 1) 90vh,
+          rgba(0, 255, 255, 0.8) 120vh,
           rgba(32, 31, 66, 0) 150vh
         )`,
       },
       {
-        backgroundImage: `radial-gradient(circle at 50% 3.9575vh, rgb(255, 213, 133) 0vh,
-         rgb(247, 77, 82) 50.011vh,
-          rgb(145, 42, 105) 90.0183vh,
+        backgroundImage: `radial-gradient(circle at 50% 3.9575vh, rgb(161, 229, 241) 0vh,
+         rgb(28, 168, 187) 50.011vh,
+          rgb(10, 121, 141) 90.0183vh,
            rgba(32, 31, 66, 0) 140.599vh)`,
         duration: 3,
       },
-      "<1.2"
+      "<1.2",
     );
 
     tl.set(".hero-main-container", { opacity: 0 });
@@ -106,7 +112,7 @@ const Intro = () => {
       {
         maskImage: `radial-gradient(circle at 50% 16.1137vh, rgb(0, 0, 0) 96.1949vh, rgba(0, 0, 0, 0) 112.065vh)`,
       },
-      "<+=2.1"
+      "<+=2.1",
     );
 
     tl.to(
@@ -115,7 +121,7 @@ const Intro = () => {
         maskImage: `radial-gradient(circle at 50% -40vh, rgb(0, 0, 0) 0vh, rgba(0, 0, 0, 0) 80vh)`,
         duration: 2,
       },
-      "<+=0.2"
+      "<+=0.2",
     );
 
     tl.to(
@@ -123,12 +129,23 @@ const Intro = () => {
       {
         position: "fixed",
         opacity: 1,
-        duration: 8,
+        duration: 6, // Reduzido de 8 para 6
         ease: "power2.out",
         delay: 0.2,
       },
-      "<+=3"
-    ).to(videoRef.current, { scale: 0.9, duration: 2 });
+      "<+=2.5", // Ajustado timing
+    ).to(videoRef.current, {
+      scale: 0.9,
+      duration: 1.5,
+      onComplete: () => {
+        ScrollTrigger.getById("intro-pin")?.kill();
+        gsap.set("#intro", {
+          position: "relative",
+        });
+      },
+    });
+
+    tl.scrollTrigger.vars.id = "intro-pin";
   };
 
   useGSAP(() => {
@@ -146,46 +163,39 @@ const Intro = () => {
   }, [lenis]);
 
   return (
-    <div className="container min-w-full overflow-hidden min-h-screen relative bg-gradient-to-br from-[#1c1829] via-[#1b1828] via-[#191724] via-[#161520] via-[#14131c] via-[#121218] to-[#111117]">
-      {/* Overlay */}
-      <div className="overlay overflow-hidden fixed inset-0 bg-black z-10 pointer-events-none"></div>
+    <div id="intro" ref={introRef} className="relative">
+      <div className="relative container min-h-screen min-w-full overflow-hidden bg-gray-950">
+        {/* Overlay */}
+        <div className="overlay pointer-events-none fixed inset-0 z-10 overflow-hidden bg-black"></div>
 
-      {/* Hero 1 Container */}
-      <div className="hero-1-container w-full h-screen relative">
-        {/* Hero Main Container with background logo */}
-        <div
-          className="hero-main-container w-full h-screen relative scale-125 bg-no-repeat bg-center pb-[200px]"
-          style={{
-            backgroundImage: `url("${logo}")`,
-            backgroundSize: "1000vh",
-            backgroundPosition: "50% 41.7%",
-            backgroundOrigin: "content-box",
-          }}
-        >
-          {/* Hero Main Video */}
-          <video
-            className="hero-main-image w-full h-screen absolute inset-0 object-cover"
-            src={introVideo}
-            loop
-            muted
-            autoPlay
-            playsInline
-          />
-        </div>
+        {/* Hero 1 Container */}
+        <div className="hero-1-container relative h-screen w-full">
+          {/* Hero Main Container with background logo */}
+          <div
+            className="hero-main-container relative h-screen w-full scale-125 bg-center bg-no-repeat pb-[200px]"
+            style={{
+              backgroundImage: `url("${logo}")`,
+              backgroundSize: "1000vh",
+              backgroundPosition: "50% 41.7%",
+              backgroundOrigin: "content-box",
+            }}
+          >
+            {/* Hero Main Video */}
+            <video
+              className="hero-main-image absolute inset-0 h-screen w-full object-cover"
+              src={introVideo}
+              loop
+              muted
+              autoPlay
+              playsInline
+            />
+          </div>
 
-        {/* Hero Text Logo Container */}
-        <div className="hero-text-logo-container w-full h-screen absolute inset-0 -z-10 bg-transparent flex flex-col gap-16 justify-center items-center">
-          <div>
+          {/* Hero Text Logo Container */}
+          <div className="hero-text-logo-container absolute inset-0 -z-10 flex h-screen w-full items-center justify-center bg-transparent">
             <h3
-              className="hero-text text-[#ffb0c4] text-center uppercase text-4xl sm:text-5xl lg:text-6xl leading-[0.85] mt-0 w-full px-4"
+              className="hero-text w-full px-4 text-center text-4xl leading-[0.85] text-[#ffb0c4] uppercase sm:text-5xl lg:text-6xl"
               style={{
-                backgroundImage: `radial-gradient(
-                    circle at 50% 200vh,
-                    rgba(255, 214, 135, 0) 0,
-                    rgba(157, 47, 106, 0.5) 90vh,
-                    rgba(157, 47, 106, 0.8) 120vh,
-                    rgba(32, 31, 66, 0) 150vh
-                  )`,
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
               }}
@@ -196,12 +206,12 @@ const Intro = () => {
             </h3>
           </div>
         </div>
-      </div>
 
-      <div id="video" ref={videoRef} className="opacity-0 w-full h-dvh">
-        <Video />
+        <div id="video" ref={videoRef} className="h-dvh w-full opacity-0">
+          <Video videoRef={videoRef} />
 
-        <div className="hero-2-content relative z-10 pointer-events-none"></div>
+          <div className="hero-2-content pointer-events-none relative z-10"></div>
+        </div>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const TOTAL_FRAMES = 96;
 
-const Video = () => {
+const Video = ({ videoRef }) => {
   const canvasRef = useRef(null);
   const [images, setImages] = useState([]);
 
@@ -15,7 +15,7 @@ const Video = () => {
 
     for (let i = 0; i < TOTAL_FRAMES; i++) {
       const img = new Image();
-      img.src = `/frames/frame_${String(i).padStart(4, "0")}.jpg`;
+      img.src = `/frames/frame_${String(i).padStart(4, "0")}.webp`;
 
       framesImages.push(img);
     }
@@ -49,7 +49,7 @@ const Video = () => {
       snap: "frame",
       ease: "none",
       scrollTrigger: {
-        trigger: "#video",
+        trigger: videoRef.current,
         start: "top top",
         end: `+=${TOTAL_FRAMES * 50}`,
         scrub: true,
@@ -60,9 +60,9 @@ const Video = () => {
 
     images[0].onload = render;
     if (images[0].complete) render();
-  }, [images]);
+  }, [images, videoRef]);
 
-  return <canvas ref={canvasRef} className="w-screen h-dvh object-cover" />;
+  return <canvas ref={canvasRef} className="w-screen min-h-dvh object-cover" />;
 };
 
 export default Video;
