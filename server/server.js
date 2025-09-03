@@ -6,6 +6,9 @@ import MongoStore from "connect-mongo";
 import fastifyHelmet from "@fastify/helmet";
 import cors from "@fastify/cors";
 
+// Config
+import { initOracle, closeOracle } from "./config/oracle.js";
+
 // Routes
 import { users } from "./routes/userRoutes.js";
 
@@ -16,20 +19,13 @@ const fastify = Fastify({
 });
 
 fastify.register(cors, {
-  origin: "http://localhost:8080",
+  origin: "http://localhost:3000",
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 });
 
-fastify.register(fastifyCookie, {
-  secret: process.env.COOKIE_SECRET,
-  parseOptions: {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-  },
-});
+fastify.register(fastifyCookie);
 
 fastify.register(fastifySession, {
   rolling: true,
@@ -59,9 +55,21 @@ fastify.register(fastifyHelmet, {
 // Routes
 fastify.register(users, { prefix: "/usuarios" });
 
-fastify.listen({ port: 3000 }, function (err, address) {
-  if (err) {
+const start = async () => {
+  try {
+    await initOracle();
+
+    await fastify.listen({ port: 3000 });
+    console.log("🚀 Servidor rodando em http://localhost:3000");
+  } catch (err) {
     fastify.log.error(err);
     process.exit(1);
   }
+};
+
+start();
+
+process.on("SIGINT", async () => {
+  await closeOracle();
+  process.exit(0);
 });

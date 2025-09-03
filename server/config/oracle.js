@@ -1,5 +1,5 @@
 import oracledb from "oracledb";
-import 'dotenv/config'
+import "dotenv/config";
 
 oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 
@@ -9,6 +9,7 @@ export async function initOracle() {
       user: process.env.ORACLE_USERNAME,
       password: process.env.ORACLE_PASSWORD,
       connectString: process.env.ORACLE_CONNECTION,
+      poolAlias: "default",
       poolMin: 2,
       poolMax: 10,
       poolIncrement: 1,
@@ -30,5 +31,5 @@ export async function closeOracle() {
 }
 
 export async function getConnection() {
-  return await oracledb.getConnection();
+  return await oracledb.getConnection("default");
 }

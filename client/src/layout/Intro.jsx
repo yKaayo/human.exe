@@ -172,7 +172,7 @@ const Intro = () => {
         <div className="hero-1-container relative h-screen w-full">
           {/* Hero Main Container with background logo */}
           <div
-            className="hero-main-container relative h-screen w-full scale-125 bg-center bg-no-repeat pb-[200px]"
+            className="hero-main-container relative h-screen w-full scale-125 bg-center bg-no-repeat pb-[250px] sm:pb-[200px]"
             style={{
               backgroundImage: `url("${logo}")`,
               backgroundSize: "1000vh",

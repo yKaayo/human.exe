@@ -1,6 +1,7 @@
 // Controllers
-import { getUsers } from "../controllers/userController.js";
+import { loginUser, registerUser } from "../controllers/userController.js";
 
 export const users = async (fastify) => {
-  fastify.get("/", getUsers);
+  fastify.post("/entrar", loginUser);
+  fastify.post("/registrar", registerUser);
 };

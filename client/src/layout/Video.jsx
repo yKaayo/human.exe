@@ -62,7 +62,7 @@ const Video = ({ videoRef }) => {
     if (images[0].complete) render();
   }, [images, videoRef]);
 
-  return <canvas ref={canvasRef} className="w-screen min-h-dvh object-cover" />;
+  return <canvas ref={canvasRef} className="w-screen min-h-dvh object-cover object-center" />;
 };
 
 export default Video;
