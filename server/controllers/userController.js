@@ -9,15 +9,14 @@ export const loginUser = async (req, rep) => {
   if (!email || !password)
     return rep
       .status(400)
-      .send({ sucess: false, data: null, error: "Data missing" });
+      .send({ success: false, data: null, error: "Dados incompletos" });
 
   const [user] = await findUser(email);
-  console.log(user);
-
-  if (user.length === 0)
+  
+  if (!user || user.length === 0)
     return rep
       .status(404)
-      .send({ sucess: false, data: null, error: "User not found" });
+      .send({ success: false, data: null, error: "Usuário não encontrado" });
 
   const matchPassword = await comparePassword(password, user.PASSWORD_HASH);
   console.log(matchPassword);
@@ -26,7 +25,7 @@ export const loginUser = async (req, rep) => {
   if (matchPassword === false) {
     return rep
       .status(401)
-      .send({ sucess: false, data: null, error: "Senha incorreta" });
+      .send({ success: false, data: null, error: "Senha incorreta" });
   }
     
 
@@ -36,7 +35,7 @@ export const loginUser = async (req, rep) => {
     email: user.EMAIL,
   };
 
-  return rep.status(200).send({ sucess: true, data: userData, error: null });
+  return rep.status(200).send({ success: true, data: userData, error: null });
 };
 
 export const registerUser = async (req, rep) => {
@@ -45,7 +44,7 @@ export const registerUser = async (req, rep) => {
   if (!name || !email || !password) {
     return rep
       .status(400)
-      .send({ sucess: false, data: null, error: "Data missing" });
+      .send({ success: false, data: null, error: "Dados incompletos" });
   }
 
   // Checking if user exist
@@ -55,7 +54,7 @@ export const registerUser = async (req, rep) => {
   if (verifyUser.length > 0)
     return rep
       .status(400)
-      .send({ sucess: false, data: null, error: "User already exist" });
+      .send({ success: false, data: null, error: "Usuário já existe" });
 
   const hashedPassword = hashPassword(password);
 
@@ -64,7 +63,7 @@ export const registerUser = async (req, rep) => {
   if (!user)
     return rep
       .status(500)
-      .send({ sucess: false, data: null, error: "Error creating user" });
+      .send({ success: false, data: null, error: "Erro ao criar a conta" });
 
-  return rep.status(201).send({ sucess: true, data: user, error: null });
+  return rep.status(201).send({ success: true, data: user, error: null });
 };

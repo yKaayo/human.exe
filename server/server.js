@@ -10,7 +10,8 @@ import cors from "@fastify/cors";
 import { initOracle, closeOracle } from "./config/oracle.js";
 
 // Routes
-import { users } from "./routes/userRoutes.js";
+import users from "./routes/userRoutes.js";
+import chat from "./routes/chatRoutes.js";
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ const fastify = Fastify({
 });
 
 fastify.register(cors, {
-  origin: "http://localhost:3000",
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
@@ -54,6 +55,7 @@ fastify.register(fastifyHelmet, {
 
 // Routes
 fastify.register(users, { prefix: "/usuarios" });
+fastify.register(chat, { prefix: "/chat" });
 
 const start = async () => {
   try {

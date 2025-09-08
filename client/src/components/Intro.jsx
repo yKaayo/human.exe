@@ -8,7 +8,7 @@ import introVideo from "../assets/videos/bannerVideo.mp4";
 // Icon
 import logo from "../assets/icons/logo.svg";
 
-// Layout
+// Component
 import Video from "./Video";
 
 // Util
@@ -30,12 +30,18 @@ const Intro = () => {
 
     gsap.to(".overlay", {
       opacity: 0,
-      duration: 2.8,
+      duration: 3,
       ease: "power3.out",
       onComplete: () => {
         document.body.style.overflow = "visible";
         document.body.style.overflowX = "hidden";
       },
+    });
+
+    gsap.to(".hero-main-image", {
+      duration: 3,
+      ease: "power3.out",
+      scale: 1,
     });
   };
 
@@ -129,11 +135,11 @@ const Intro = () => {
       {
         position: "fixed",
         opacity: 1,
-        duration: 6, // Reduzido de 8 para 6
+        duration: 6,
         ease: "power2.out",
         delay: 0.2,
       },
-      "<+=2.5", // Ajustado timing
+      "<+=2.5",
     ).to(videoRef.current, {
       scale: 0.9,
       duration: 1.5,
@@ -166,7 +172,7 @@ const Intro = () => {
     <div id="intro" ref={introRef} className="relative">
       <div className="relative container min-h-screen min-w-full overflow-hidden bg-gray-950">
         {/* Overlay */}
-        <div className="overlay pointer-events-none fixed inset-0 z-10 overflow-hidden bg-black"></div>
+        <div className="overlay pointer-events-none fixed inset-0 z-[1] overflow-hidden bg-black"></div>
 
         {/* Hero 1 Container */}
         <div className="hero-1-container relative h-screen w-full">
@@ -182,7 +188,7 @@ const Intro = () => {
           >
             {/* Hero Main Video */}
             <video
-              className="hero-main-image absolute inset-0 h-screen w-full object-cover"
+              className="hero-main-image absolute inset-0 h-screen w-full scale-150 object-cover"
               src={introVideo}
               loop
               muted

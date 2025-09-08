@@ -1,12 +1,10 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BrowserRouter, Routes, Route } from "react-router";
-
-// Layout
-import Header from "./layout/Header";
+import { ToastContainer } from "react-toastify";
 
 // Component
-import ScrollIndicator from "./components/ScrollIndicator";
+import Header from "./components/Header";
 
 // Pages
 import Home from "./pages/Home";
@@ -17,14 +15,13 @@ gsap.registerPlugin(ScrollTrigger);
 const App = () => {
   return (
     <BrowserRouter>
+      <ToastContainer />
       <Header />
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/desafio" element={<Challenge />} />
       </Routes>
-
-      <ScrollIndicator />
     </BrowserRouter>
   );
 };
