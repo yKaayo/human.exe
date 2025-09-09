@@ -95,6 +95,7 @@ const Login = ({ isOpen, handleClose, toRegister }) => {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
+    
     try {
       const res = await login(data.email, data.password);
 

@@ -158,14 +158,14 @@ const Register = ({ isOpen, handleClose, toLogin }) => {
 
             <div className="space-y-2">
               <label
-                htmlFor="email"
+                htmlFor="emailRegister"
                 className="text-sm font-medium text-zinc-200"
               >
                 Email
               </label>
               <input
                 type="email"
-                id="email"
+                id="emailRegister"
                 placeholder="email@email.com"
                 {...register("email")}
                 className="flex h-9 w-full rounded-md border border-zinc-200 bg-white px-3 py-5 text-sm shadow-sm placeholder:text-zinc-500 focus-visible:ring-1 focus-visible:ring-zinc-950 focus-visible:outline-none"
@@ -177,7 +177,7 @@ const Register = ({ isOpen, handleClose, toLogin }) => {
 
             <div className="space-y-2">
               <label
-                htmlFor="password"
+                htmlFor="passwordRegister"
                 className="text-sm font-medium text-zinc-200"
               >
                 Senha
@@ -185,7 +185,7 @@ const Register = ({ isOpen, handleClose, toLogin }) => {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  id="password"
+                  id="passwordRegister"
                   placeholder="Digite sua senha"
                   {...register("password")}
                   className="flex h-9 w-full rounded-md border border-zinc-200 bg-white px-3 py-5 pr-10 text-sm shadow-sm placeholder:text-zinc-500 focus-visible:ring-1 focus-visible:ring-zinc-950 focus-visible:outline-none"

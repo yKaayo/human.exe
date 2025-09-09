@@ -1,16 +1,15 @@
-// Component
+// Components
 import Intro from "../components/Intro";
 import Challenge from "../components/ChallengeSection";
 import ScrollIndicator from "../components/ScrollIndicator";
+import StorySection from "../components/StorySection";
 
 const Home = () => {
   return (
     <div className="flex flex-col overflow-hidden">
       <Intro />
       <Challenge />
-      <div className="min-h-dvh">
-        <p className="text-white">Seja mais</p>
-      </div>
+      <StorySection />
       <ScrollIndicator />
     </div>
   );

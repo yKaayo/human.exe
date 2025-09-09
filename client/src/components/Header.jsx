@@ -96,9 +96,23 @@ const Header = () => {
                     Desafio
                   </Link>
                 </li>
+                <li
+                  className={`transform transition-all delay-200 duration-300 md:translate-x-0 md:transform-none md:opacity-100 md:transition-none ${
+                    menuIsOpen
+                      ? "translate-x-0 opacity-100"
+                      : "-translate-x-4 opacity-0"
+                  }`}
+                >
+                  <Link
+                    to="/memorias"
+                    className="block rounded-lg text-white transition-all duration-200 hover:translate-x-2 hover:bg-white/10 hover:text-gray-300 md:px-0 md:py-0 md:hover:translate-x-0 md:hover:bg-transparent"
+                  >
+                    Memórias
+                  </Link>
+                </li>
               </ul>
             </nav>
-            
+
             {!user && (
               <div className="mt-3 flex gap-3 md:mt-0">
                 <button
@@ -125,7 +139,7 @@ const Header = () => {
             <button
               onClick={handleMenu}
               disabled={isPlaying}
-              className={`transform transition-all duration-200 hover:scale-105 -mx-7 active:scale-95 md:hidden ${
+              className={`-mx-7 transform transition-all duration-200 hover:scale-105 active:scale-95 md:hidden ${
                 isPlaying ? "pointer-events-none opacity-75" : ""
               }`}
               aria-label={

@@ -8,10 +8,12 @@ import cors from "@fastify/cors";
 
 // Config
 import { initOracle, closeOracle } from "./config/oracle.js";
+import { mongoPlugin, closeMongoDB, isMongoConnected } from "./config/mongo.js";
 
 // Routes
 import users from "./routes/userRoutes.js";
 import chat from "./routes/chatRoutes.js";
+import memory from "./routes/memoryRoutes.js";
 
 dotenv.config();
 
@@ -28,6 +30,8 @@ fastify.register(cors, {
 
 fastify.register(fastifyCookie);
 
+fastify.register(mongoPlugin);
+
 fastify.register(fastifySession, {
   rolling: true,
   cookieName: "sessionId",
@@ -35,13 +39,14 @@ fastify.register(fastifySession, {
   store: MongoStore.create({
     mongoUrl: process.env.MONGO_CONNECTION,
     collectionName: "sessions",
+    touchAfter: 24 * 3600,
   }),
   rolling: false,
   cookie: {
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     sameSite: "lax",
-    secure: false,
+    secure: process.env.NODE_ENV === 'production',
   },
   saveUninitialized: false,
   resave: false,
@@ -56,6 +61,7 @@ fastify.register(fastifyHelmet, {
 // Routes
 fastify.register(users, { prefix: "/usuarios" });
 fastify.register(chat, { prefix: "/chat" });
+fastify.register(memory, { prefix: "/memorias" });
 
 const start = async () => {
   try {

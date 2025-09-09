@@ -91,7 +91,7 @@ const ChallengeSection = () => {
           <p className="text-zinc-200 mx-auto md:mx-0 mt-3 text-2xl">Suas escolhas moldam o pensamente da IA</p>
 
           <Link to="/desafio" className="mx-auto md:mx-0 mt-5">
-            <StarBorder className="pt-1.5" color="cyan" speed="5s">
+            <StarBorder className="pt-1.5" color="cyan" speed="5s" fontSize="28px">
               Desafio
             </StarBorder>
           </Link>

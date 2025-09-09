@@ -1,26 +1,21 @@
+// services/storyService.js
 import { storytellerAgent } from "../config/langchain.js";
-import OpenAI from "openai";
 
 export const getStoryAndQuestion = async (prompt) => {
   try {
-    // const res = await storytellerAgent.invoke(prompt);
+    const res = await storytellerAgent.invoke(prompt);
 
-    const openai = new OpenAI({
-      // baseURL: "https://openrouter.ai/api/v1",
-      apiKey: process.env.OPENAI_API_KEY,
-    });
-    const res = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "user",
-          content: "What is the meaning of life?",
-        },
-      ],
-    });
+    // A API pode retornar texto com JSON dentro, aqui tentamos parsear
+    let parsed;
+    try {
+      parsed = JSON.parse(res.content);
+    } catch {
+      console.warn("Resposta não veio como JSON estrito:", res.content);
+      return res.content;
+    }
 
-    res.then((result) => console.log(result.output_text));
-    return res;
+    console.log("História gerada:", parsed);
+    return parsed;
   } catch (err) {
     console.error("Erro em getStoryAndQuestion:", err);
     return null;

@@ -97,7 +97,7 @@ const Video = ({ videoRef }) => {
 
   return (
     <div className="relative flex items-center justify-center">
-      <h3 className="absolute text-center text-[clamp(2rem,8vw,6rem)] leading-[0.85] font-bold text-white text-shadow-lg/30 text-balance">
+      <h3 className="absolute text-center text-[clamp(2rem,8vw,6rem)] leading-none font-bold text-white text-shadow-lg/30 text-balance">
         VOCÊ ESTÁ PRONTO<br></br>PARA SALVAR A HUMANIDADE?
       </h3>
 

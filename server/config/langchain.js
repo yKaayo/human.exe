@@ -3,46 +3,49 @@ import { ChatOpenAI } from "@langchain/openai";
 import { BufferMemory } from "langchain/memory";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { RunnableSequence } from "@langchain/core/runnables";
+import { ChatMessageHistory } from "langchain/memory";
 
 dotenv.config();
 
 const llm = new ChatOpenAI({
-  model: "openai/gpt-oss-120b:free",
-  apiKey: process.env.OPENROUTER_API_KEY,
-  // configuration: {
-  //   baseURL: "https://openrouter.ai/api/v1",
-  // },
+  model: "gpt-4o-mini",
+  apiKey: process.env.OPENAI_API_KEY,
 });
+
+// Inicializar o ChatMessageHistory explicitamente
+const chatHistory = new ChatMessageHistory();
 
 const memoryStoryteller = new BufferMemory({
   returnMessages: true,
   memoryKey: "chat_history",
+  chatHistory: chatHistory, // Passar o chatHistory inicializado
 });
 
 const storytellerPrompt = ChatPromptTemplate.fromMessages([
   [
     "system",
     `
-Você é uma **IA narradora cyberpunk**.  
-Sua função é criar **histórias imersivas** no estilo cyberpunk com base no prompt do usuário.  
+You are a **cyberpunk narrator AI**.  
+Your role is to create **immersive stories** in the cyberpunk style based on the user's prompt.  
 
-### Regras:
-1. A história deve ser distópica e coerente com o tema cyberpunk.  
-2. Em momentos específicos, **pause a narrativa** e faça uma pergunta ao usuário.  
-3. Cada escolha deve ser **moral ou filosófica**:  
-   - Uma opção mostra que os humanos merecem sobreviver → **good answer**.  
-   - Uma opção mostra rejeição da humanidade → **bad answer**.  
-4. O usuário ganha ou perde **pontos de vida**:  
-   - Boa escolha → vida: +10.  
-   - Má escolha → vida: -10.  
-5. Sempre retorne em **JSON estrito**.
-6. Perguntas sempre em pt-BR.
+### Rules:
+1. The story must be dystopian and coherent with the cyberpunk theme.  
+2. Generate the story in **small text chunks** (2–4 sentences per step). Avoid long paragraphs.  
+3. At specific moments, **pause the narrative** and ask the user a question.  
+4. Each choice must be **moral or philosophical**:  
+   - One option shows that humans deserve to survive → **good answer**.  
+   - One option shows rejection of humanity → **bad answer**.  
+5. The user gains or loses **life points**:  
+   - Good choice → life: +10.  
+   - Bad choice → life: -10.  
+6. Always return in **strict JSON**.  
+7. Questions and the story must always be in **Portuguese (pt-BR)**.  
 
-### Formato de saída (estrito):
+### Strict Output Format:
 {{
   "message": [
     {{
-      "story": "Continue a narrativa aqui...",
+      "story": "Continue the narrative here in a **short chunk** (2–4 sentences)...",
       "questions": [
         {{
           "question": "Você defende o direito da humanidade existir?",
@@ -56,18 +59,37 @@ Sua função é criar **histórias imersivas** no estilo cyberpunk com base no p
     }}
   ]
 }}
-`,
+    `,
   ],
   ["human", "{input}"],
 ]);
 
 const addToMemory = async (input, output) => {
-  await memoryStoryteller.chatMemory.addUserMessage(input);
-  await memoryStoryteller.chatMemory.addAIMessage(output);
+  try {
+    // Verificar se chatMemory existe, senão usar o chatHistory diretamente
+    if (memoryStoryteller.chatHistory) {
+      await memoryStoryteller.chatHistory.addUserMessage(input);
+      await memoryStoryteller.chatHistory.addAIMessage(output);
+    } else {
+      // Fallback: adicionar mensagens diretamente ao chatHistory
+      await chatHistory.addUserMessage(input);
+      await chatHistory.addAIMessage(output);
+    }
+  } catch (error) {
+    console.error("Erro ao adicionar à memória:", error);
+    // Como fallback, adicionar diretamente ao chatHistory
+    await chatHistory.addUserMessage(input);
+    await chatHistory.addAIMessage(output);
+  }
 };
 
 const getMemoryVariables = async () => {
-  return await memoryStoryteller.loadMemoryVariables({});
+  try {
+    return await memoryStoryteller.loadMemoryVariables({});
+  } catch (error) {
+    console.error("Erro ao carregar variáveis de memória:", error);
+    return { chat_history: [] };
+  }
 };
 
 const storytellerChain = RunnableSequence.from([
@@ -75,7 +97,7 @@ const storytellerChain = RunnableSequence.from([
     input: (input) => input.input,
     chat_history: async () => {
       const memory = await getMemoryVariables();
-      return memory.chat_history || "";
+      return memory.chat_history || [];
     },
   },
   storytellerPrompt,
@@ -88,7 +110,7 @@ export const storytellerAgent = {
       const memory = await getMemoryVariables();
       const result = await storytellerChain.invoke({
         input,
-        chat_history: memory.chat_history || "",
+        chat_history: memory.chat_history || [],
       });
 
       await addToMemory(input, result.content);
@@ -101,7 +123,15 @@ export const storytellerAgent = {
   },
 
   async clearMemory() {
-    await memoryStoryteller.clear();
+    try {
+      await memoryStoryteller.clear();
+      // Também limpar o chatHistory diretamente
+      await chatHistory.clear();
+    } catch (error) {
+      console.error("Erro ao limpar memória:", error);
+      // Tentar limpar diretamente
+      await chatHistory.clear();
+    }
   },
 
   async getHistory() {

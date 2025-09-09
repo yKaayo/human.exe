@@ -8,10 +8,13 @@ export const getQuestions = async (answer) => {
       prompt: answer,
     });
 
-    console.log(data);
-    
+    if (data.success) {
+      return data.data.message[0];
+    }
 
-    
+    if (data.error) {
+      return data;
+    }
   } catch (err) {
     console.error(err);
     return null;
