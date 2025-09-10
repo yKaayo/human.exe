@@ -22,7 +22,7 @@ const fastify = Fastify({
 });
 
 fastify.register(cors, {
-  origin: "https://human-exe.vercel.app/",
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
