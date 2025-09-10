@@ -46,7 +46,7 @@ fastify.register(fastifySession, {
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === "production",
   },
   saveUninitialized: false,
   resave: false,
@@ -68,7 +68,6 @@ const start = async () => {
     await initOracle();
 
     await fastify.listen({ port: 3000 });
-    console.log("🚀 Servidor rodando em http://localhost:3000");
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

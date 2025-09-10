@@ -96,7 +96,7 @@ const Header = () => {
                     Desafio
                   </Link>
                 </li>
-                <li
+                {/* <li
                   className={`transform transition-all delay-200 duration-300 md:translate-x-0 md:transform-none md:opacity-100 md:transition-none ${
                     menuIsOpen
                       ? "translate-x-0 opacity-100"
@@ -109,7 +109,7 @@ const Header = () => {
                   >
                     Memórias
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </nav>
 

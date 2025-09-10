@@ -1,23 +1,17 @@
-// services/storyService.js
 import { storytellerAgent } from "../config/langchain.js";
 
-export const getStoryAndQuestion = async (prompt) => {
+export const getStoryAndQuestion = async (prompt, currentLife = 100) => {
   try {
-    const res = await storytellerAgent.invoke(prompt);
+    const isEnding = currentLife <= 0;
 
-    // A API pode retornar texto com JSON dentro, aqui tentamos parsear
-    let parsed;
-    try {
-      parsed = JSON.parse(res.content);
-    } catch {
-      console.warn("Resposta não veio como JSON estrito:", res.content);
-      return res.content;
-    }
+    const result = await storytellerAgent.invoke(prompt, {
+      isEnding,
+      currentLife,
+    });
 
-    console.log("História gerada:", parsed);
-    return parsed;
-  } catch (err) {
-    console.error("Erro em getStoryAndQuestion:", err);
-    return null;
+    return result.parsed;
+  } catch (error) {
+    console.error("Erro no chat service:", error);
+    throw new Error("Erro ao processar história: " + error.message);
   }
 };

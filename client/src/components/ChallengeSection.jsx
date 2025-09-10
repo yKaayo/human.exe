@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Link } from "react-router";
 import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 
 // Components
 import MagicBento from "./MagicBento";
@@ -85,27 +86,40 @@ const ChallengeSection = () => {
     <section className="relative container mx-auto mt-[150vh]">
       <div className="flex h-dvh flex-col items-center justify-center md:grid md:grid-cols-[1fr_290px]">
         <div className="flex flex-col px-3 md:px-0">
-          <h2 className="text-center leading-none text-[clamp(2rem,8vw,6rem)] font-bold text-balance text-white md:text-start">
+          <h2 className="text-center text-[clamp(2rem,8vw,6rem)] leading-none font-bold text-balance text-white md:text-start">
             Tente convencer a IA através de suas escolhas
           </h2>
-          <p className="text-zinc-200 mx-auto md:mx-0 mt-3 text-2xl">Suas escolhas moldam o pensamente da IA</p>
+          <p className="mx-auto mt-3 text-2xl text-zinc-200 md:mx-0">
+            Suas escolhas moldam o pensamente da IA
+          </p>
 
-          <Link to="/desafio" className="mx-auto md:mx-0 mt-5">
-            <StarBorder className="pt-1.5" color="cyan" speed="5s" fontSize="28px">
+          <Link to="/desafio" className="mx-auto mt-5 md:mx-0">
+            <StarBorder
+              className="pt-1.5"
+              color="cyan"
+              speed="5s"
+              fontSize="28px"
+            >
               Desafio
             </StarBorder>
           </Link>
         </div>
 
-        <div className="relative h-full w-full flex items-center">
+        <div className="relative flex h-full w-full items-center">
           <Canvas
-            className="-mt-40 md:-me-40 relative z-[1]"
+            className="relative z-[1] -mt-40 md:-me-40"
             shadows
             camera={{ position: [0, 1.5, 3], fov: 45 }}
           >
             <Experience />
+             <OrbitControls 
+        enableZoom={false} 
+        enablePan={false} 
+        maxPolarAngle={Math.PI / 2} 
+        minPolarAngle={0} 
+      />
           </Canvas>
-          <div className="absolute inset-0 bg-cyan-500 opacity-20  blur-3xl" />
+          <div className="absolute inset-0 bg-cyan-500 opacity-20 blur-3xl" />
         </div>
       </div>
 

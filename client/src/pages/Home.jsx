@@ -9,7 +9,7 @@ const Home = () => {
     <div className="flex flex-col overflow-hidden">
       <Intro />
       <Challenge />
-      <StorySection />
+      {/* <StorySection /> */}
       <ScrollIndicator />
     </div>
   );

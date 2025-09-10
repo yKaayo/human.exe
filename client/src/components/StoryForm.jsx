@@ -41,10 +41,6 @@ const StoryForm = ({ isOpen, handleClose }) => {
 
     try {
       const res = await createMemory(user.id, data.title, data.memory);
-      console.log(res);
-      
-
-      
 
       if (res.success) {
         toast.success(res.data.message);

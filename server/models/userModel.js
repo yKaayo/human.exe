@@ -36,3 +36,41 @@ export const createUser = async (name, email, hashedPassword, createdAt) => {
     await conn.close();
   }
 };
+
+export const edit = async (name, email, hashedPassword) => {
+  const conn = await getConnection();
+
+  try {
+    const result = await conn.execute(
+      `UPDATE cyberpunk_users 
+       SET name = :name, email = :email, password_hash = :password_hash
+       WHERE email = :email`,
+      {
+        name: { val: name },
+        email: { val: email },
+        password_hash: { val: hashedPassword },
+      },
+      { autoCommit: true }
+    );
+    return result.rowsAffected;
+  } finally {
+    await conn.close();
+  }
+};
+
+export const delUser = async (email) => {
+  const conn = await getConnection();
+
+  try {
+    const result = await conn.execute(
+      `DELETE FROM cyberpunk_users WHERE email = :email`,
+      {
+        email: { val: email },
+      },
+      { autoCommit: true }
+    );
+    return result.rowsAffected;
+  } finally {
+    await conn.close();
+  }
+};
