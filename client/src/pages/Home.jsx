@@ -3,6 +3,7 @@ import Intro from "../components/Intro";
 import Challenge from "../components/ChallengeSection";
 import ScrollIndicator from "../components/ScrollIndicator";
 import StorySection from "../components/StorySection";
+import AiWebsite from "../components/AiWebsite";
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
       <Challenge />
       {/* <StorySection /> */}
       <ScrollIndicator />
+      <AiWebsite />
     </div>
   );
 };

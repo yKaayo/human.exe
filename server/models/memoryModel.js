@@ -138,8 +138,8 @@ class Memory {
           updatedAt: new Date(),
         },
         {
-          new: true, // Retorna o documento atualizado
-          runValidators: true, // Executa as validações do schema
+          new: true,
+          runValidators: true,
         }
       );
 
