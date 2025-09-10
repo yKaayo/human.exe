@@ -11,9 +11,16 @@ import MagicBento from "./MagicBento";
 import { Experience } from "./Experience";
 import StarBorder from "./StarBorder";
 
+// Requirement: Register the plugin
+gsap.registerPlugin(ScrollTrigger);
+
 const ChallengeSection = () => {
   const sectionRef = useRef(null);
   const containerRef = useRef(null);
+  const titleRef = useRef(null);
+  const textRef = useRef(null);
+  const linkRef = useRef(null);
+  const bentoContainerRef = useRef(null);
 
   const cardData = [
     {
@@ -56,53 +63,129 @@ const ChallengeSection = () => {
     },
   ];
 
-  useGSAP(() => {
-    const pinAnimation = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top top",
-      end: "+=1000",
-      pin: true,
-      pinSpacing: true,
-      scrub: 1,
-      onUpdate: (self) => {
-        const progress = self.progress;
+  // 1st ScrollTrigger: Pinning the MagicBento section
+  useGSAP(
+    () => {
+      // This check is important to avoid errors on smaller screens
+      if (window.innerWidth <= 768) return;
 
-        gsap.to(containerRef.current, {
-          opacity: 0.5 + progress * 0.5,
-          duration: 0.1,
-        });
-      },
-      onComplete: () => {
-        gsap.set(containerRef.current, { opacity: 1 });
-      },
-    });
+      const pinAnimation = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "+=1000",
+        pin: true,
+        pinSpacing: true,
+        scrub: 1,
+        onUpdate: (self) => {
+          const progress = self.progress;
 
-    return () => {
-      pinAnimation.kill();
-    };
-  }, []);
+          // Requirement: gsap.to()
+          gsap.to(containerRef.current, {
+            opacity: 0.5 + progress * 0.5,
+            duration: 0.1,
+          });
+        },
+        onComplete: () => {
+          gsap.set(containerRef.current, { opacity: 1 });
+        },
+      });
+
+      return () => {
+        if (pinAnimation) pinAnimation.kill();
+      };
+    },
+    { scope: sectionRef }
+  );
+
+  // 2nd ScrollTrigger: Animating the section title and text
+  useGSAP(
+    () => {
+      // Requirement: gsap.timeline()
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: "top 80%",
+        },
+      });
+
+      // Requirement: gsap.from()
+      tl.from(titleRef.current, {
+        y: 50,
+        opacity: 0,
+        duration: 0.6,
+      })
+        .from(
+          textRef.current,
+          {
+            y: 50,
+            opacity: 0,
+            duration: 0.6,
+          },
+          "-=0.4"
+        )
+        .from(
+          linkRef.current,
+          {
+            y: 50,
+            opacity: 0,
+            duration: 0.6,
+          },
+          "-=0.4"
+        );
+    },
+    { scope: sectionRef }
+  );
+
+  // 3rd ScrollTrigger: Animating the MagicBento component
+  useGSAP(
+    () => {
+      // Requirement: gsap.fromTo()
+      gsap.fromTo(
+        bentoContainerRef.current,
+        { y: 100, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          scrollTrigger: {
+            trigger: bentoContainerRef.current,
+            start: "top 80%",
+          },
+        }
+      );
+    },
+    { scope: sectionRef }
+  );
 
   return (
-    <section className="relative container mx-auto mt-[150vh]">
+    <section ref={sectionRef} className="relative container mx-auto mt-[150vh]">
       <div className="flex h-dvh flex-col items-center justify-center md:grid md:grid-cols-[1fr_290px]">
         <div className="flex flex-col px-3 md:px-0">
-          <h2 className="text-center text-[clamp(2rem,8vw,6rem)] leading-none font-bold text-balance text-white md:text-start">
+          <h2
+            ref={titleRef}
+            className="text-center text-[clamp(2rem,8vw,6rem)] leading-none font-bold text-balance text-white md:text-start"
+          >
             Tente convencer a IA através de suas escolhas
           </h2>
-          <p className="mx-auto mt-3 text-2xl text-zinc-200 md:mx-0">
+          <p
+            ref={textRef}
+            className="mx-auto mt-3 text-2xl text-zinc-200 md:mx-0"
+          >
             Suas escolhas moldam o pensamente da IA
           </p>
 
-          <Link to="/desafio" className="mx-auto mt-5 md:mx-0">
-            <StarBorder
-              className="pt-1.5"
-              color="cyan"
-              speed="5s"
-              fontSize="28px"
-            >
-              Desafio
-            </StarBorder>
-          </Link>
+          <div ref={linkRef}>
+            <Link to="/desafio" className="mx-auto mt-5 md:mx-0">
+              <StarBorder
+                className="pt-1.5"
+                color="cyan"
+                speed="5s"
+                fontSize="28px"
+              >
+                Desafio
+              </StarBorder>
+            </Link>
+          </div>
         </div>
 
         <div className="relative flex h-full w-full items-center">
@@ -112,7 +195,7 @@ const ChallengeSection = () => {
             camera={{ position: [0, 1.5, 3], fov: 45 }}
           >
             <Experience />
-             <OrbitControls 
+            <OrbitControls
         enableZoom={false} 
         enablePan={false} 
         maxPolarAngle={Math.PI / 2} 
@@ -123,27 +206,23 @@ const ChallengeSection = () => {
         </div>
       </div>
 
-      <div
-        ref={window.innerWidth > 768 ? sectionRef : null}
-        className="relative"
-      >
-        <div
-          ref={containerRef}
-          className="relative flex h-dvh w-full flex-col items-center justify-center gap-5 pt-[90px]"
-        >
-          <MagicBento
-            textAutoHide={true}
-            enableStars={false}
-            enableSpotlight={true}
-            enableBorderGlow={true}
-            enableTilt={true}
-            enableMagnetism={true}
-            clickEffect={true}
-            spotlightRadius={300}
-            particleCount={12}
-            glowColor="28, 168, 187"
-            cardData={cardData}
-          />
+      <div ref={containerRef} className="relative">
+        <div className="relative flex h-dvh w-full flex-col items-center justify-center gap-5 pt-[90px]">
+          <div ref={bentoContainerRef}>
+            <MagicBento
+              textAutoHide={true}
+              enableStars={false}
+              enableSpotlight={true}
+              enableBorderGlow={true}
+              enableTilt={true}
+              enableMagnetism={true}
+              clickEffect={true}
+              spotlightRadius={300}
+              particleCount={12}
+              glowColor="28, 168, 187"
+              cardData={cardData}
+            />
+          </div>
         </div>
       </div>
     </section>

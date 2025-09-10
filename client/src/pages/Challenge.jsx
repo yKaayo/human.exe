@@ -87,11 +87,11 @@ const Challenge = () => {
   };
 
   return (
-    <section className="relative flex h-dvh items-center justify-center bg-gray-950">
+    <section className="relative overflow-hidden flex h-dvh items-center justify-center bg-gray-950">
       <HealthBar life={life} />
 
       <Canvas
-        className="mt-20 h-full w-full"
+        className="mt-48 h-full w-full"
         shadows
         camera={{ position: [0, 1.5, 3], fov: 45 }}
       >
