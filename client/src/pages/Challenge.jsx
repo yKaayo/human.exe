@@ -156,14 +156,6 @@ const Challenge = () => {
                       <div className="text-sm leading-relaxed">
                         {question.question}
                       </div>
-                      <div
-                        className="mt-1"
-                      >
-                        {question.life > 0
-                          ? `+${question.life}`
-                          : question.life}{" "}
-                        energia
-                      </div>
                     </div>
                   )}
                 </StarBorder>
