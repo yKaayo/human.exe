@@ -67,7 +67,7 @@ const start = async () => {
   try {
     await initOracle();
 
-    await fastify.listen({ port: 3000 });
+    await fastify.listen({ port: "https://human-exe.onrender.com" });
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
