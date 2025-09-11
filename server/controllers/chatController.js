@@ -1,6 +1,10 @@
 // Services
 import { getStoryAndQuestion } from "../services/ChatServices.js";
 
+// Models
+import { createChoice } from "../models/choiceModel.js";
+import { create } from "../models/storyModel.js";
+
 export const promptUser = async (req, rep) => {
   const { prompt, currentLife = 100 } = req.body;
 

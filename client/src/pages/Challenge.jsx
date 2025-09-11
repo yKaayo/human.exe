@@ -15,6 +15,9 @@ import { getQuestions } from "../services/ChatApi";
 // Lottie
 import loadingAnim from "../assets/lottie/loading.json";
 
+// Context
+import { useUser } from "../contexts/useUser";
+
 const Challenge = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [questions, setQuestions] = useState(null);
@@ -22,7 +25,15 @@ const Challenge = () => {
   const [life, setLife] = useState(80);
   const [gameEnded, setGameEnded] = useState(false);
 
+  const { user } = useUser();
+
   const handleQuestion = async (answer) => {
+    // Verificar se o usuário existe antes de processar
+    if (!user) {
+      toast.error("Usuário não encontrado! Faça login para continuar.");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -78,6 +89,14 @@ const Challenge = () => {
     }
   };
 
+  const handleStart = () => {
+    if (!user) {
+      toast.error("Acesso negado! Faça login para iniciar o protocolo neural.");
+      return;
+    }
+    handleQuestion("Iniciar minha jornada");
+  };
+
   const handleRestart = () => {
     setLife(80);
     setStory("");
@@ -105,8 +124,8 @@ const Challenge = () => {
               <h3 className="text-center text-xl leading-relaxed text-balance text-white">
                 <DecryptedText
                   text={story}
-                  speed={5} 
-                  maxIterations={15} 
+                  speed={5}
+                  maxIterations={15}
                   characters="ABCD1234!?"
                   className="revealed"
                   parentClassName="all-letters"
@@ -142,7 +161,7 @@ const Challenge = () => {
                   className="relative min-h-16 w-1/2"
                   handleClick={() => handleQuestion(question)}
                   speed="5s"
-                  disabled={isLoading}
+                  disabled={isLoading || !user}
                 >
                   {isLoading ? (
                     <Lottie
@@ -164,10 +183,10 @@ const Challenge = () => {
           ) : (
             <StarBorder
               className="relative min-h-16"
-              handleClick={() => handleQuestion("Iniciar minha jornada")}
+              handleClick={handleStart}
               color="cyan"
               speed="5s"
-              disabled={isLoading}
+              disabled={isLoading || !user}
             >
               {isLoading ? (
                 <Lottie
@@ -178,7 +197,7 @@ const Challenge = () => {
                 />
               ) : (
                 <div className="p-4 text-center text-lg">
-                  Iniciar Protocolo Neural
+                  {!user ? "Login Necessário" : "Iniciar Protocolo Neural"}
                 </div>
               )}
             </StarBorder>

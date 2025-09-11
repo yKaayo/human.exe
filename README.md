@@ -5,13 +5,19 @@ Um projeto full-stack com um frontend em React e um backend em Node.js.
 ## 🚀 Tecnologias Utilizadas
 
 ### Frontend (Client)
--   **[React](https://reactjs.org/)**: Biblioteca JavaScript para construir interfaces de usuário.
--   **[Vite](https://vitejs.dev/)**: Ferramenta de build para desenvolvimento web moderno e rápido.
--   **[React Dropzone](https://react-dropzone.js.org/)**: Hook para criar uma área de arrastar e soltar arquivos.
+- React
+- Tailwind
+- Axios
+- Lottie
+- GSAP
+- React Hook Form
+- Zod
 
 ### Backend (Server)
--   **[Node.js](https://nodejs.org/)**: Ambiente de execução JavaScript do lado do servidor.
--   **[Dotenv](https://github.com/motdotla/dotenv)**: Para carregar variáveis de ambiente a partir de um arquivo `.env`.
+- Fastify
+- MongoDB
+- Oracle
+- Langchain
 
 ## 📂 Estrutura do Projeto
 

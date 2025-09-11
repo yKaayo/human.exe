@@ -9,10 +9,10 @@ import menuAnim from "../assets/lottie/menu.json";
 import StarBorder from "./StarBorder";
 import Login from "./Login";
 import Register from "./Register";
+import Dropdown from "./Dropdown/Dropdown";
 
 // Context
 import { useUser } from "../contexts/useUser";
-import Dropdown from "./Dropdown/Dropdown";
 
 const Header = () => {
   const lottieRef = useRef();
