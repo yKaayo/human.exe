@@ -17,7 +17,7 @@ const AiWebsite = () => {
         rel="noopener noreferrer"
       >
         <StarBorder className="pt-1.5" color="cyan" speed="5s" fontSize="28px">
-          ENTRAR NO SITE
+          Entrar no site
         </StarBorder>
       </a>
     </section>

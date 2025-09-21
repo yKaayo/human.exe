@@ -1,5 +1,4 @@
 import Lottie from "lottie-react";
-import { Link } from "react-router";
 import { useRef, useState } from "react";
 
 // Lottie
@@ -9,7 +8,11 @@ import menuAnim from "../assets/lottie/menu.json";
 import StarBorder from "./StarBorder";
 import Login from "./Login";
 import Register from "./Register";
+import Navbar from "./Navbar";
 import Dropdown from "./Dropdown/Dropdown";
+
+// Icon
+import cartIcon from "../assets/icons/cart.svg";
 
 // Context
 import { useUser } from "../contexts/useUser";
@@ -19,6 +22,7 @@ const Header = () => {
   const [animationState, setAnimationState] = useState("start");
   const [isPlaying, setIsPlaying] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
   // Modals
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
@@ -55,7 +59,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="fixed top-0 z-10 w-full px-5 sm:px-0">
+      <div className="fixed top-0 z-50 w-full px-5 sm:px-0">
         <header className="relative container mx-auto mt-3 flex h-[60px] items-center rounded-2xl bg-white/20 px-10 py-3 shadow-2xl backdrop-blur-md md:justify-center">
           <h1 className="absolute font-bold text-white">HUMAN.EXE</h1>
 
@@ -66,52 +70,7 @@ const Header = () => {
                 : "invisible mt-0 -translate-y-4 opacity-0"
             } md:mt-0 md:translate-y-0 md:opacity-100`}
           >
-            <nav>
-              <ul className="flex flex-col gap-2 md:flex-row md:gap-6 md:px-0 md:py-0">
-                <li
-                  className={`transform transition-all delay-100 duration-300 md:translate-x-0 md:transform-none md:opacity-100 md:transition-none ${
-                    menuIsOpen
-                      ? "translate-x-0 opacity-100"
-                      : "-translate-x-4 opacity-0"
-                  }`}
-                >
-                  <Link
-                    to="/"
-                    className="block rounded-lg text-white transition-all duration-200 hover:translate-x-2 hover:bg-white/10 hover:text-gray-300 md:px-0 md:py-0 md:hover:translate-x-0 md:hover:bg-transparent"
-                  >
-                    Início
-                  </Link>
-                </li>
-                <li
-                  className={`transform transition-all delay-200 duration-300 md:translate-x-0 md:transform-none md:opacity-100 md:transition-none ${
-                    menuIsOpen
-                      ? "translate-x-0 opacity-100"
-                      : "-translate-x-4 opacity-0"
-                  }`}
-                >
-                  <Link
-                    to="/desafio"
-                    className="block rounded-lg text-white transition-all duration-200 hover:translate-x-2 hover:bg-white/10 hover:text-gray-300 md:px-0 md:py-0 md:hover:translate-x-0 md:hover:bg-transparent"
-                  >
-                    Desafio
-                  </Link>
-                </li>
-                {/* <li
-                  className={`transform transition-all delay-200 duration-300 md:translate-x-0 md:transform-none md:opacity-100 md:transition-none ${
-                    menuIsOpen
-                      ? "translate-x-0 opacity-100"
-                      : "-translate-x-4 opacity-0"
-                  }`}
-                >
-                  <Link
-                    to="/memorias"
-                    className="block rounded-lg text-white transition-all duration-200 hover:translate-x-2 hover:bg-white/10 hover:text-gray-300 md:px-0 md:py-0 md:hover:translate-x-0 md:hover:bg-transparent"
-                  >
-                    Memórias
-                  </Link>
-                </li> */}
-              </ul>
-            </nav>
+            <Navbar menuIsOpen={menuIsOpen} />
 
             {!user && (
               <div className="mt-3 flex gap-3 md:mt-0">
@@ -134,8 +93,35 @@ const Header = () => {
             )}
           </div>
 
-          <div className="ms-auto flex items-center">
+          <div className="ms-auto flex items-center gap-5">
+            {user && (
+              <div className="flex items-center gap-5">
+                <button onClick={() => setCartOpen((prev) => !prev)}>
+                  <img className="size-8" src={cartIcon} alt="Carrinho" />
+                </button>
+
+                {cartOpen && (
+                  <div className="absolute top-full right-0 z-50 mt-2 w-64 rounded-lg border bg-zinc-900 shadow-lg">
+                    <div className="p-4">
+                      <p className="font-semibold text-white">Seu carrinho</p>
+                      <ul className="mt-2 space-y-2">
+                        <li className="flex justify-between text-sm text-white">
+                          <span>Produto 1</span>
+                          <span>R$ 20,00</span>
+                        </li>
+                        <li className="flex justify-between text-sm text-white">
+                          <span>Produto 2</span>
+                          <span>R$ 15,00</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             {user && <Dropdown />}
+
             <button
               onClick={handleMenu}
               disabled={isPlaying}

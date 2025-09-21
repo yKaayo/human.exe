@@ -28,7 +28,6 @@ const Challenge = () => {
   const { user } = useUser();
 
   const handleQuestion = async (answer) => {
-    // Verificar se o usuário existe antes de processar
     if (!user) {
       toast.error("Usuário não encontrado! Faça login para continuar.");
       return;

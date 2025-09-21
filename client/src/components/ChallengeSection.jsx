@@ -63,10 +63,8 @@ const ChallengeSection = () => {
     },
   ];
 
-  // 1st ScrollTrigger: Pinning the MagicBento section
   useGSAP(
     () => {
-      // This check is important to avoid errors on smaller screens
       if (window.innerWidth <= 768) return;
 
       const pinAnimation = ScrollTrigger.create({
@@ -79,7 +77,6 @@ const ChallengeSection = () => {
         onUpdate: (self) => {
           const progress = self.progress;
 
-          // Requirement: gsap.to()
           gsap.to(containerRef.current, {
             opacity: 0.5 + progress * 0.5,
             duration: 0.1,
@@ -94,13 +91,11 @@ const ChallengeSection = () => {
         if (pinAnimation) pinAnimation.kill();
       };
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
-  // 2nd ScrollTrigger: Animating the section title and text
   useGSAP(
     () => {
-      // Requirement: gsap.timeline()
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: titleRef.current,
@@ -108,7 +103,6 @@ const ChallengeSection = () => {
         },
       });
 
-      // Requirement: gsap.from()
       tl.from(titleRef.current, {
         y: 50,
         opacity: 0,
@@ -121,7 +115,7 @@ const ChallengeSection = () => {
             opacity: 0,
             duration: 0.6,
           },
-          "-=0.4"
+          "-=0.4",
         )
         .from(
           linkRef.current,
@@ -130,16 +124,14 @@ const ChallengeSection = () => {
             opacity: 0,
             duration: 0.6,
           },
-          "-=0.4"
+          "-=0.4",
         );
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
-  // 3rd ScrollTrigger: Animating the MagicBento component
   useGSAP(
     () => {
-      // Requirement: gsap.fromTo()
       gsap.fromTo(
         bentoContainerRef.current,
         { y: 100, opacity: 0 },
@@ -151,10 +143,10 @@ const ChallengeSection = () => {
             trigger: bentoContainerRef.current,
             start: "top 80%",
           },
-        }
+        },
       );
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   return (
@@ -196,11 +188,11 @@ const ChallengeSection = () => {
           >
             <Experience />
             <OrbitControls
-        enableZoom={false} 
-        enablePan={false} 
-        maxPolarAngle={Math.PI / 2} 
-        minPolarAngle={0} 
-      />
+              enableZoom={false}
+              enablePan={false}
+              maxPolarAngle={Math.PI / 2}
+              minPolarAngle={0}
+            />
           </Canvas>
           <div className="absolute inset-0 bg-cyan-500 opacity-20 blur-3xl" />
         </div>

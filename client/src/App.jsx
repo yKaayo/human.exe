@@ -10,6 +10,7 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Challenge from "./pages/Challenge";
 import Memories from "./pages/Memories";
+import Experience from "./pages/Experience";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,6 +23,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/desafio" element={<Challenge />} />
+        <Route path="/experiencias" element={<Experience />} />
         <Route path="/memorias" element={<Memories />} />
       </Routes>
     </BrowserRouter>
