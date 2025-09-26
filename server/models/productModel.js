@@ -22,9 +22,9 @@ const ProductSchema = new mongoose.Schema({
     required: [true, "Preço é obrigatório"],
     min: [0, "Preço não pode ser negativo"],
   },
-  producer: {
-    type: Number,
-    required: [true, "ID do fabricante é obrigatório"],
+  type: {
+    type: String,
+    required: [true, "Tipo é obrigatório"],
   },
   createdAt: {
     type: Date,
@@ -68,8 +68,8 @@ class Product {
       errors.push("Preço não pode ser negativo");
     }
 
-    if (!this.body.producer || isNaN(this.body.producer)) {
-      errors.push("ID do fabricante é obrigatório e deve ser numérico");
+    if (!this.body.type || this.body.type.trim() === "") {
+      errors.push("Tipo é obrigatório");
     }
 
     return errors;
@@ -87,7 +87,7 @@ class Product {
         title: this.body.title.trim(),
         description: this.body.description.trim(),
         price: this.body.price,
-        producer: this.body.producer,
+        type: this.body.type,
       });
 
       return {
@@ -161,7 +161,7 @@ class Product {
           title: this.body.title.trim(),
           description: this.body.description.trim(),
           price: this.body.price,
-          producer: this.body.producer,
+          type: this.body.type,
           updatedAt: new Date(),
         },
         {

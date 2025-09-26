@@ -1,40 +1,11 @@
-import { RGBA_ASTC_10x10_Format } from "three";
 import Carousel from "../components/Carousel";
 
-const Experience = () => {
-  const data = [
-    {
-      id: 1,
-      title: "Músicas no violino",
-      img: "",
-      service: "song",
-    },
-    {
-      id: 1,
-      title: "Músicas no violino",
-      img: "",
-      service: "song",
-    },
-    {
-      id: 1,
-      title: "Músicas no violino",
-      img: "",
-      service: "song",
-    },
-    {
-      id: 1,
-      title: "Músicas no violino",
-      img: "",
-      service: "song",
-    },
-    {
-      id: 1,
-      title: "Músicas no violino",
-      img: "",
-      service: "song",
-    },
-  ];
+// Util
+import { formatCurrency } from "../utils/formatCurrency";
 
+import mockProducts from "../mocks/products.json";
+
+const Experience = () => {
   return (
     <section className="min-h-dvh bg-gray-950">
       <div className="container mx-auto pt-28">
@@ -42,7 +13,8 @@ const Experience = () => {
           NeuroLink Humanity
         </h2>
 
-        <Carousel data={data} />
+        <Carousel data={mockProducts} />
+        <Carousel data={mockProducts} />
       </div>
     </section>
   );
