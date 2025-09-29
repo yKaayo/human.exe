@@ -1,7 +1,5 @@
+// Component
 import Carousel from "../components/Carousel";
-
-// Util
-import { formatCurrency } from "../utils/formatCurrency";
 
 import mockProducts from "../mocks/products.json";
 

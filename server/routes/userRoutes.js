@@ -9,8 +9,8 @@ import {
 const users = async (fastify) => {
   fastify.post("/entrar", loginUser);
   fastify.post("/registrar", registerUser);
-  fastify.patch("/editar", editUser);
-  fastify.delete("/editar", deleteUser);
+  fastify.patch("/", editUser);
+  fastify.delete("/", deleteUser);
 };
 
 export default users;

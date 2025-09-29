@@ -5,7 +5,8 @@
     "description": "Violão de madeira para te emocionar através das notas",
     "price": 1500,
     "type": "song",
-    "img": "https://imgs.search.brave.com/RdASKt5haEQl316uPxIvIHruznAYY1U3AU80PubUs4I/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zZXJl/bmF0YS52dGV4aW1n/LmNvbS5ici9hcnF1/aXZvcy9pZHMvMzEx/MTEwOC0zMDAtMzAw/L1ZJT0xBTy1NSUNI/QUVMLVZNTTEzMC1N/SF9JTUcyLmpwZz92/PTYzODU4ODA1Njgy/NzkwMDAwMA"
+    "img": "https://imgs.search.brave.com/RdASKt5haEQl316uPxIvIHruznAYY1U3AU80PubUs4I/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zZXJl/bmF0YS52dGV4aW1n/LmNvbS5ici9hcnF1/aXZvcy9pZHMvMzEx/MTEwOC0zMDAtMzAw/L1ZJT0xBTy1NSUNI/QUVMLVZNTTEzMC1N/SF9JTUcyLmpwZz92/PTYzODU4ODA1Njgy/NzkwMDAwMA",
+    "producerId": 1
   },
   {
     "id": 2,
@@ -13,22 +14,7 @@
     "description": "Uma voz para seus vídeos",
     "price": 200,
     "type": "service",
-    "img": "https://imgs.search.brave.com/ctOOjjgzxp9Ui7UK83roU7jaKqPGlFLB9HkQDrx9a2U/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/ZmFicmljYXNkZWN1/bHR1cmEub3JnLmJy/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDI0/LzA1L0RVQkxBTkRP/LURFU0VOSE9TLUlO/RkFOVElTLUNPTS1F/UVVJUEUtQklCTElP/VEVDQS5qcGVn"
-  },
-  {
-    "id": 3,
-    "title": "Música com Violão",
-    "description": "Violão de madeira para te emocionar através das notas",
-    "price": 1500,
-    "type": "song",
-    "img": "https://imgs.search.brave.com/RdASKt5haEQl316uPxIvIHruznAYY1U3AU80PubUs4I/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zZXJl/bmF0YS52dGV4aW1n/LmNvbS5ici9hcnF1/aXZvcy9pZHMvMzEx/MTEwOC0zMDAtMzAw/L1ZJT0xBTy1NSUNI/QUVMLVZNTTEzMC1N/SF9JTUcyLmpwZz92/PTYzODU4ODA1Njgy/NzkwMDAwMA"
-  },
-  {
-    "id": 4,
-    "title": "Dublagem",
-    "description": "Uma voz para seus vídeos",
-    "price": 200,
-    "type": "service",
-    "img": "https://imgs.search.brave.com/ctOOjjgzxp9Ui7UK83roU7jaKqPGlFLB9HkQDrx9a2U/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/ZmFicmljYXNkZWN1/bHR1cmEub3JnLmJy/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDI0/LzA1L0RVQkxBTkRP/LURFU0VOSE9TLUlO/RkFOVElTLUNPTS1F/UVVJUEUtQklCTElP/VEVDQS5qcGVn"
+    "img": "https://imgs.search.brave.com/ctOOjjgzxp9Ui7UK83roU7jaKqPGlFLB9HkQDrx9a2U/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/ZmFicmljYXNkZWN1/bHR1cmEub3JnLmJy/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDI0/LzA1L0RVQkxBTkRP/LURFU0VOSE9TLUlO/RkFOVElTLUNPTS1F/UVVJUEUtQklCTElP/VEVDQS5qcGVn",
+    "producerId": 1
   }
 ]

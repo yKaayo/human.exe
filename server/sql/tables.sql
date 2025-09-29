@@ -2,6 +2,7 @@
 create sequence seq_users start with 1 increment by 1;
 create sequence seq_story start with 1 increment by 1;
 create sequence seq_choice start with 1 increment by 1;
+create sequence seq_cart start with 1 increment by 1;
 
 -- TABELAS
 create table cyberpunk_users (
@@ -13,18 +14,26 @@ create table cyberpunk_users (
 );
 
 create table cyberpunk_story_history (
-   id      number primary key,
+   id            number primary key,
    story_content varchar(255) not null,
    created_at    date not null,
-   id_user number not null
+   id_user       number not null
 );
 
 create table cyberpunk_choices_history (
-   id      number primary key,
+   id             number primary key,
    choice_content varchar(255) not null,
-   created_at    date not null,
-   id_user number not null
+   created_at     date not null,
+   id_user        number not null
 );
+
+create table cyberpunk_cart (
+   id         number primary key,
+   product_id varchar(50) not null,
+   created_at date not null,
+   id_user    number not null
+);
+
 
 -- Alter
 alter table cyberpunk_story_history
@@ -33,4 +42,8 @@ alter table cyberpunk_story_history
 
 alter table cyberpunk_choices_history
    add constraint fk_user_choices foreign key ( id_user )
+      references cyberpunk_users ( id );
+
+alter table cyberpunk_cart
+   add constraint fk_user_cart foreign key ( id_user )
       references cyberpunk_users ( id );

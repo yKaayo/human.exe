@@ -8,12 +8,14 @@ import cors from "@fastify/cors";
 
 // Config
 import { initOracle, closeOracle } from "./config/oracle.js";
-import { mongoPlugin, closeMongoDB, isMongoConnected } from "./config/mongo.js";
+import { mongoPlugin } from "./config/mongo.js";
 
 // Routes
 import users from "./routes/userRoutes.js";
 import chat from "./routes/chatRoutes.js";
 import memory from "./routes/memoryRoutes.js";
+import product from "./routes/productRoutes.js";
+import cart from "./routes/cartRoutes.js";
 
 dotenv.config();
 
@@ -62,6 +64,8 @@ fastify.register(fastifyHelmet, {
 fastify.register(users, { prefix: "/usuarios" });
 fastify.register(chat, { prefix: "/chat" });
 fastify.register(memory, { prefix: "/memorias" });
+fastify.register(product, { prefix: "/produtos" });
+fastify.register(cart, { prefix: "/carrinho" });
 
 const start = async () => {
   try {

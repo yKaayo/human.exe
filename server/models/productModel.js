@@ -26,6 +26,14 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     required: [true, "Tipo é obrigatório"],
   },
+  image: {
+    type: String,
+    required: [true, "Imagem é obrigatória"],
+  },
+  producerId: {
+    type: Number,
+    required: [true, "ID do produtor é obrigatório"],
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -72,6 +80,14 @@ class Product {
       errors.push("Tipo é obrigatório");
     }
 
+    if (!this.body.image || this.body.image.trim() === "") {
+      errors.push("Imagem é obrigatória");
+    }
+
+    if (!this.body.producerId || isNaN(this.body.producerId)) {
+      errors.push("ID do produtor é obrigatório e deve ser numérico");
+    }
+
     return errors;
   }
 
@@ -88,6 +104,8 @@ class Product {
         description: this.body.description.trim(),
         price: this.body.price,
         type: this.body.type,
+        image: this.body.image.trim(),
+        producerId: this.body.producerId,
       });
 
       return {
@@ -162,6 +180,8 @@ class Product {
           description: this.body.description.trim(),
           price: this.body.price,
           type: this.body.type,
+          image: this.body.image.trim(),
+          producerId: this.body.producerId,
           updatedAt: new Date(),
         },
         {
