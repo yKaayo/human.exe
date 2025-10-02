@@ -27,6 +27,7 @@ import { removeItem } from "../services/CartApi";
 
 const Header = () => {
   const lottieRef = useRef();
+
   const [animationState, setAnimationState] = useState("start");
   const [isPlaying, setIsPlaying] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -64,6 +65,18 @@ const Header = () => {
 
     // Btn
     setMenuIsOpen((prev) => !prev);
+  };
+
+  const [playingItemId, setPlayingItemId] = useState(null);
+
+  const handleDelete = async (item) => {
+    setPlayingItemId(item.ID);
+
+    setTimeout(async () => {
+      await removeItem(item.PRODUCT_ID, user.id);
+      getCard();
+      setPlayingItemId(null);
+    }, 1000);
   };
 
   return (
@@ -113,7 +126,7 @@ const Header = () => {
               <div className="flex items-center gap-5">
                 <button onClick={() => setCartOpen((prev) => !prev)}>
                   <img
-                    className="size-4 sm:size-14"
+                    className="size-4 sm:size-10"
                     src={cartIcon}
                     alt="Carrinho"
                   />
@@ -132,7 +145,6 @@ const Header = () => {
 
                             if (!product) return null;
 
-
                             return (
                               <li
                                 key={item.ID}
@@ -143,21 +155,28 @@ const Header = () => {
                                   src={product.img}
                                   alt={product.title}
                                 />
-                                <span>{product.title}</span>
+                                <div className="flex w-full items-center justify-between">
+                                  <span>{product.title}</span>
 
-                                <button
-                                  onClick={async () => {
-                                    await removeItem(item.PRODUCT_ID, user.id);
-                                    getCard();
-                                  }}
-                                >
-                                  <Lottie
-                                    animationData={deleteAnim}
-                                    className=""
-                                    autoPlay={false}
-                                    loop={false}
-                                  />
-                                </button>
+                                  <button onClick={() => handleDelete(item)}>
+                                    {playingItemId === item.ID ? (
+                                      <Lottie
+                                        key={item.ID}
+                                        animationData={deleteAnim}
+                                        autoplay={true}
+                                        loop={false}
+                                        className="size-8"
+                                      />
+                                    ) : (
+                                      <Lottie
+                                        animationData={deleteAnim}
+                                        autoplay={false}
+                                        loop={false}
+                                        className="size-8"
+                                      />
+                                    )}
+                                  </button>
+                                </div>
                               </li>
                             );
                           })}

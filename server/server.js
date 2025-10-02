@@ -16,6 +16,7 @@ import chat from "./routes/chatRoutes.js";
 import memory from "./routes/memoryRoutes.js";
 import product from "./routes/productRoutes.js";
 import cart from "./routes/cartRoutes.js";
+import order from './routes/orderRoutes.js';
 
 dotenv.config();
 
@@ -66,6 +67,7 @@ fastify.register(chat, { prefix: "/chat" });
 fastify.register(memory, { prefix: "/memorias" });
 fastify.register(product, { prefix: "/produtos" });
 fastify.register(cart, { prefix: "/carrinho" });
+fastify.register(order, { prefix: "/pedido" });
 
 const start = async () => {
   try {
