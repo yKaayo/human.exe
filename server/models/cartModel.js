@@ -34,13 +34,18 @@ export const addToCart = async (userId, productId, createdAt) => {
   }
 };
 
-export const deleteCartItem = async (cartId) => {
+export const deleteCartItem = async (productId, userId) => {
   const conn = await getConnection();
 
   try {
     const result = await conn.execute(
-      `DELETE FROM cyberpunk_cart WHERE id = :id`,
-      { id: { val: cartId } },
+      `DELETE FROM cyberpunk_cart 
+       WHERE PRODUCT_ID = :productId 
+       AND ID_USER = :userId`,
+      { 
+        productId: { val: productId },
+        userId: { val: userId }
+      },
       { autoCommit: true }
     );
     return result.rowsAffected;

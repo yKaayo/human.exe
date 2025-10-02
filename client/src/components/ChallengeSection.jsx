@@ -11,7 +11,6 @@ import MagicBento from "./MagicBento";
 import { Experience } from "./Experience";
 import StarBorder from "./StarBorder";
 
-// Requirement: Register the plugin
 gsap.registerPlugin(ScrollTrigger);
 
 const ChallengeSection = () => {

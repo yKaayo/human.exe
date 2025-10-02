@@ -10,9 +10,6 @@ const mongooseOptions = {
 
   retryWrites: true,
   w: "majority",
-
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
 };
 
 export const connectMongoDB = async () => {

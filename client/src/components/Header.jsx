@@ -1,8 +1,9 @@
 import Lottie from "lottie-react";
 import { useRef, useState } from "react";
 
-// Lottie
+// Lotties
 import menuAnim from "../assets/lottie/menu.json";
+import deleteAnim from "../assets/lottie/delete.json";
 
 // Components
 import StarBorder from "./StarBorder";
@@ -14,8 +15,15 @@ import Dropdown from "./Dropdown/Dropdown";
 // Icon
 import cartIcon from "../assets/icons/cart.svg";
 
-// Context
+// Contexts
 import { useUser } from "../contexts/useUser";
+import { useCart } from "../contexts/useCart";
+
+// Mock
+import mockProducts from "../mocks/products.json";
+
+// Services
+import { removeItem } from "../services/CartApi";
 
 const Header = () => {
   const lottieRef = useRef();
@@ -29,6 +37,7 @@ const Header = () => {
   const [registerModalIsOpen, setRegisterModalIsOpen] = useState(false);
 
   const { user } = useUser();
+  const { cart, getCard } = useCart();
 
   const handleMenu = () => {
     // Anim
@@ -75,14 +84,20 @@ const Header = () => {
             {!user && (
               <div className="mt-3 flex gap-3 md:mt-0">
                 <button
-                  onClick={() => setLoginModalIsOpen((prev) => !prev)}
+                  onClick={() => {
+                    setLoginModalIsOpen((prev) => !prev);
+                    handleMenu();
+                  }}
                   className="text-white"
                 >
                   Entrar
                 </button>
 
                 <StarBorder
-                  handleClick={() => setRegisterModalIsOpen((prev) => !prev)}
+                  handleClick={() => {
+                    setRegisterModalIsOpen((prev) => !prev);
+                    handleMenu();
+                  }}
                   className="pt-1.5"
                   color="cyan"
                   speed="5s"
@@ -97,22 +112,55 @@ const Header = () => {
             {user && (
               <div className="flex items-center gap-5">
                 <button onClick={() => setCartOpen((prev) => !prev)}>
-                  <img className="size-8" src={cartIcon} alt="Carrinho" />
+                  <img
+                    className="size-4 sm:size-14"
+                    src={cartIcon}
+                    alt="Carrinho"
+                  />
                 </button>
 
                 {cartOpen && (
                   <div className="absolute top-full right-0 z-50 mt-2 w-64 rounded-lg border bg-zinc-900 shadow-lg">
                     <div className="p-4">
                       <p className="font-semibold text-white">Seu carrinho</p>
-                      <ul className="mt-2 space-y-2">
-                        <li className="flex justify-between text-sm text-white">
-                          <span>Produto 1</span>
-                          <span>R$ 20,00</span>
-                        </li>
-                        <li className="flex justify-between text-sm text-white">
-                          <span>Produto 2</span>
-                          <span>R$ 15,00</span>
-                        </li>
+                      <ul className="mt-3 max-h-[200px] space-y-3 overflow-y-auto">
+                        {cart.data.length > 0 &&
+                          cart.data.map((item) => {
+                            const product = mockProducts.find(
+                              (mock) => mock.id === item.PRODUCT_ID,
+                            );
+
+                            if (!product) return null;
+
+
+                            return (
+                              <li
+                                key={item.ID}
+                                className="flex items-center gap-3 text-sm text-white"
+                              >
+                                <img
+                                  className="size-12 rounded-lg"
+                                  src={product.img}
+                                  alt={product.title}
+                                />
+                                <span>{product.title}</span>
+
+                                <button
+                                  onClick={async () => {
+                                    await removeItem(item.PRODUCT_ID, user.id);
+                                    getCard();
+                                  }}
+                                >
+                                  <Lottie
+                                    animationData={deleteAnim}
+                                    className=""
+                                    autoPlay={false}
+                                    loop={false}
+                                  />
+                                </button>
+                              </li>
+                            );
+                          })}
                       </ul>
                     </div>
                   </div>

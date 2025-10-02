@@ -14,18 +14,25 @@ export const getCart = async (req, rep) => {
   }
 
   const cart = await findCartByUser(userId);
+  const cartWithNumbers = cart.map((item) => ({
+    ...item,
+    PRODUCT_ID: Number(item.PRODUCT_ID),
+  }));
 
-  return rep.status(200).send({ success: true, data: cart });
+  return rep.status(200).send({ success: true, data: cartWithNumbers });
 };
 
 export const createCartItem = async (req, rep) => {
   const { userId, productId } = req.body;
+
+  console.log(req.body);
 
   if (!userId || !productId) {
     return rep.status(400).send({ success: false, error: "Dados incompletos" });
   }
 
   const result = await addToCart(userId, productId, new Date());
+  console.log(result);
 
   if (!result) {
     return rep
@@ -39,15 +46,16 @@ export const createCartItem = async (req, rep) => {
 };
 
 export const removeCartItem = async (req, rep) => {
-  const { cartId } = req.body;
+  const { productId } = req.params;
+  const { userId } = req.body;
 
-  if (!cartId) {
+  if (!productId || !userId) {
     return rep
       .status(400)
-      .send({ success: false, error: "Cart ID é obrigatório" });
+      .send({ success: false, error: "Product ID e User ID são obrigatórios" });
   }
 
-  const result = await deleteCartItem(cartId);
+  const result = await deleteCartItem(productId, userId);
 
   if (!result) {
     return rep

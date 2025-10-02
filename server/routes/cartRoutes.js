@@ -8,7 +8,7 @@ import {
 const cart = async (fastify) => {
   fastify.get("/:userId", getCart);
   fastify.post("/", createCartItem);
-  fastify.delete("/", removeCartItem);
+  fastify.delete("/:productId", removeCartItem);
 };
 
 export default cart;

@@ -6,12 +6,15 @@ import App from "./App.jsx";
 // Providers
 import { ChatProvider } from "./contexts/useChat";
 import { UserProvider } from "./contexts/useUser.jsx";
+import { CartProvider } from "./contexts/useCart.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ChatProvider>
       <UserProvider>
-        <App />
+        <CartProvider>
+          <App />
+        </CartProvider>
       </UserProvider>
     </ChatProvider>
   </StrictMode>,

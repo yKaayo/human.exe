@@ -1,7 +1,5 @@
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 
 // Icon
 import arrowBottom from "../assets/icons/arrow-bottom.svg";

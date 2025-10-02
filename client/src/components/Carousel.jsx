@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 // Icons
 import chevronLeft from "../assets/icons/chevron-left.svg";
@@ -16,6 +17,7 @@ import { addItem } from "../services/CartApi";
 
 // Context
 import { useUser } from "../contexts/useUser";
+import { useCart } from "../contexts/useCart";
 
 const Carousel = ({ data }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -25,6 +27,7 @@ const Carousel = ({ data }) => {
   const [cardSelect, setCardSelect] = useState(null);
 
   const { user } = useUser();
+  const { getCard } = useCart();
 
   useEffect(() => {
     const handleResize = () => {
@@ -43,34 +46,30 @@ const Carousel = ({ data }) => {
     <>
       <section className="relative flex items-center justify-center overflow-hidden px-6 py-10">
         <button
-          onClick={() =>
-            setCurrentIndex((prev) =>
-              prev > 0 ? prev - 1 : data.length - cardsPerView,
-            )
-          }
-          className="absolute left-0 z-10 rounded-full bg-gray-800 p-1.5 text-white shadow hover:bg-gray-700"
+          onClick={() => setCurrentIndex((prev) => prev - 1)}
+          disabled={currentIndex === 0}
+          className={`absolute left-0 z-10 rounded-full p-1.5 shadow ${currentIndex === 0 ? "cursor-not-allowed bg-gray-600" : "bg-gray-800 hover:bg-gray-700"} text-white`}
         >
           <img src={chevronLeft} className="size-8" alt="Voltar" />
         </button>
 
         <div className="relative mx-8 w-full overflow-hidden">
           <div
-            className="flex gap-6 overflow-hidden transition-transform duration-500 ease-in-out"
+            className="flex w-full gap-6 transition-transform duration-500 ease-in-out sm:w-[95%]"
             style={{
               transform: `translateX(-${(currentIndex * 100) / cardsPerView}%)`,
-              width: `${(data.length * 100) / cardsPerView}%`,
             }}
           >
             {data.map((item, index) => (
               <button
                 onClick={() => {
-                  setModalIsOpen((prev) => !prev);
+                  setModalIsOpen(true);
                   setCardSelect(item);
                 }}
                 key={`${item.id}-${index}`}
                 className="overflow-hidden rounded-2xl bg-gray-900 shadow-xl"
                 style={{
-                  flex: `0 0 ${90 / data.length}%`,
+                  flex: `0 0 ${100 / cardsPerView}%`,
                   maxWidth: `${100 / cardsPerView}%`,
                 }}
               >
@@ -88,12 +87,9 @@ const Carousel = ({ data }) => {
         </div>
 
         <button
-          onClick={() =>
-            setCurrentIndex((prev) =>
-              prev < data.length - cardsPerView ? prev + 1 : 0,
-            )
-          }
-          className="absolute right-0 z-10 rounded-full bg-gray-800 p-1.5 text-white shadow hover:bg-gray-700"
+          onClick={() => setCurrentIndex((prev) => prev + 1)}
+          disabled={currentIndex >= data.length - cardsPerView}
+          className={`absolute right-0 z-10 rounded-full p-1.5 shadow ${currentIndex >= data.length - cardsPerView ? "cursor-not-allowed bg-gray-600" : "bg-gray-800 hover:bg-gray-700"} text-white`}
         >
           <img className="size-8" src={chevronRight} alt="Próximo" />
         </button>
@@ -101,28 +97,35 @@ const Carousel = ({ data }) => {
 
       {cardSelect && (
         <Modal isOpen={modalIsOpen} setIsOpen={setModalIsOpen}>
-          <div className="my-3 flex flex-col items-center gap-3 sm:grid sm:grid-cols-2">
-            <div className="rouded-lg mt-5 h-[250px] w-full overflow-hidden px-3 sm:h-full">
+          <div className="grid h-full gap-6 sm:grid-cols-2">
+            <div className="flex h-full items-center justify-center overflow-hidden rounded-lg">
               <img
                 src={cardSelect.img}
                 alt={cardSelect.title}
-                className="rouded-lg h-full w-full object-cover object-center"
+                className="h-full w-full rounded-lg object-cover object-center"
               />
             </div>
 
-            <div className="text-white">
+            <div className="flex flex-col text-white min-h-fit h-full justify-center">
               <h3 className="text-3xl font-bold">{cardSelect.title}</h3>
-              <p>{cardSelect.description}</p>
-              <p>{formatCurrency(cardSelect.price)}</p>
+              <p className="text-gray-300">{cardSelect.description}</p>
+              <p className="text-2xl font-semibold text-cyan-400 mt-3">
+                {formatCurrency(cardSelect.price)}
+              </p>
 
-              <div className="mt-3 flex items-center gap-5">
+              <div className=" flex flex-wrap items-center gap-3 mt-5">
                 <button
-                  onClick={() => addItem(user.id, cardSelect)}
-                  className="rounded-lg border border-gray-300 px-3 py-1"
+                  onClick={() => {
+                    user
+                      ? addItem(user.id, cardSelect.id)
+                      : toast.info("Entre na sua conta primeiro!");
+                    getCard();
+                  }}
+                  className="rounded-lg border border-gray-300 px-4 py-2 transition hover:bg-gray-800"
                 >
                   Adicionar carrinho
                 </button>
-                <StarBorder className="">Comprar</StarBorder>
+                <StarBorder>Comprar</StarBorder>
               </div>
             </div>
           </div>
