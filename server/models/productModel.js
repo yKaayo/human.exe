@@ -1,11 +1,6 @@
 import mongoose from "mongoose";
 
 const ProductSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
   title: {
     type: String,
     required: [true, "Título é obrigatório"],
@@ -54,10 +49,6 @@ class Product {
   validate() {
     const errors = [];
 
-    if (!this.body.id || isNaN(this.body.id)) {
-      errors.push("ID é obrigatório e deve ser numérico");
-    }
-
     if (!this.body.title || this.body.title.trim() === "") {
       errors.push("Título é obrigatório");
     }
@@ -99,7 +90,6 @@ class Product {
       }
 
       this.product = await ProductModel.create({
-        id: this.body.id,
         title: this.body.title.trim(),
         description: this.body.description.trim(),
         price: this.body.price,

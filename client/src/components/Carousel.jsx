@@ -20,6 +20,8 @@ import { useUser } from "../contexts/useUser";
 import { useCart } from "../contexts/useCart";
 
 const Carousel = ({ data }) => {
+  const items = data?.data?.data || [];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(1);
 
@@ -48,7 +50,11 @@ const Carousel = ({ data }) => {
         <button
           onClick={() => setCurrentIndex((prev) => prev - 1)}
           disabled={currentIndex === 0}
-          className={`absolute left-0 z-10 rounded-full p-1.5 shadow ${currentIndex === 0 ? "cursor-not-allowed bg-gray-600" : "bg-gray-800 hover:bg-gray-700"} text-white`}
+          className={`absolute left-0 z-10 rounded-full p-1.5 shadow ${
+            currentIndex === 0
+              ? "cursor-not-allowed bg-gray-600"
+              : "bg-gray-800 hover:bg-gray-700"
+          } text-white`}
         >
           <img src={chevronLeft} className="size-8" alt="Voltar" />
         </button>
@@ -60,13 +66,13 @@ const Carousel = ({ data }) => {
               transform: `translateX(-${(currentIndex * 100) / cardsPerView}%)`,
             }}
           >
-            {data.map((item, index) => (
+            {items.map((item, index) => (
               <button
                 onClick={() => {
                   setModalIsOpen(true);
                   setCardSelect(item);
                 }}
-                key={`${item.id}-${index}`}
+                key={`${item._id}-${index}`}
                 className="overflow-hidden rounded-2xl bg-gray-900 shadow-xl"
                 style={{
                   flex: `0 0 ${100 / cardsPerView}%`,
@@ -74,7 +80,7 @@ const Carousel = ({ data }) => {
                 }}
               >
                 <img
-                  src={item.img}
+                  src={item.image}
                   alt={item.title}
                   className="h-48 w-full object-cover"
                 />
@@ -88,8 +94,12 @@ const Carousel = ({ data }) => {
 
         <button
           onClick={() => setCurrentIndex((prev) => prev + 1)}
-          disabled={currentIndex >= data.length - cardsPerView}
-          className={`absolute right-0 z-10 rounded-full p-1.5 shadow ${currentIndex >= data.length - cardsPerView ? "cursor-not-allowed bg-gray-600" : "bg-gray-800 hover:bg-gray-700"} text-white`}
+          disabled={currentIndex >= items.length - cardsPerView}
+          className={`absolute right-0 z-10 rounded-full p-1.5 shadow ${
+            currentIndex >= items.length - cardsPerView
+              ? "cursor-not-allowed bg-gray-600"
+              : "bg-gray-800 hover:bg-gray-700"
+          } text-white`}
         >
           <img className="size-8" src={chevronRight} alt="Próximo" />
         </button>
@@ -100,7 +110,7 @@ const Carousel = ({ data }) => {
           <div className="grid h-full gap-6 sm:grid-cols-2">
             <div className="flex h-full items-center justify-center overflow-hidden rounded-lg">
               <img
-                src={cardSelect.img}
+                src={cardSelect.image}
                 alt={cardSelect.title}
                 className="h-full w-full rounded-lg object-cover object-center"
               />
@@ -117,7 +127,7 @@ const Carousel = ({ data }) => {
                 <button
                   onClick={() => {
                     user
-                      ? addItem(user.id, cardSelect.id)
+                      ? addItem(user.id, cardSelect._id)
                       : toast.info("Entre na sua conta primeiro!");
                     getCard();
                   }}

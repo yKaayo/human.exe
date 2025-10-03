@@ -1,8 +1,9 @@
 // Controllers
-import { getAll } from "../controllers/productController.js";
+import { getAll, create } from "../controllers/productController.js";
 
 const product = async (fastify) => {
   fastify.get("/", getAll);
+  fastify.post("/", create);
 };
 
 export default product;

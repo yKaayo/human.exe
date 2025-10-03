@@ -9,7 +9,7 @@ export const create = async (req, res) => {
     res.status(201).send({ success: true, data: result, error: null });
   } catch (error) {
     console.error("Erro ao criar memória:", error);
-    res.status(400).json({
+    res.status(400).send({
       success: false,
       message: error.message,
     });
@@ -36,7 +36,7 @@ export const getById = async (req, res) => {
     console.error("Erro ao buscar memória:", error);
 
     if (error.message.includes("não encontrada")) {
-      return res.status(404).json({
+      return res.status(404).send({
         success: false,
         message: error.message,
       });
@@ -55,12 +55,12 @@ export const update = async (req, res) => {
     const memory = new Product(req.body);
     const result = await memory.update(id);
 
-    res.status(200).json(result);
+    res.status(200).send(result);
   } catch (error) {
     console.error("Erro ao atualizar memória:", error);
 
     if (error.message.includes("não encontrada")) {
-      return res.status(404).json({
+      return res.status(404).send({
         success: false,
         message: error.message,
       });

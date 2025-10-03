@@ -25,8 +25,6 @@ export const getCart = async (req, rep) => {
 export const createCartItem = async (req, rep) => {
   const { userId, productId } = req.body;
 
-  console.log(req.body);
-
   if (!userId || !productId) {
     return rep.status(400).send({ success: false, error: "Dados incompletos" });
   }
