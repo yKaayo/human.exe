@@ -139,7 +139,7 @@ const Header = () => {
                       <ul className="mt-3 max-h-[200px] space-y-3 overflow-y-auto">
                         {cart.data.length > 0 &&
                           cart.data.map((item) => {
-                            const product = mockProducts.find(
+                            const product = mockProducts.data.data.find(
                               (mock) => mock.id === item.PRODUCT_ID,
                             );
 
