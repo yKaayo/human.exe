@@ -105,7 +105,7 @@ const Challenge = () => {
   };
 
   return (
-    <section className="relative overflow-hidden flex h-dvh items-center justify-center bg-gray-950">
+    <section className="relative flex h-dvh items-center justify-center overflow-hidden bg-gray-950">
       <HealthBar life={life} />
 
       <Canvas

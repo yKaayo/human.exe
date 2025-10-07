@@ -40,6 +40,9 @@ const Header = () => {
   const { user } = useUser();
   const { cart, getCard } = useCart();
 
+  
+  
+
   const handleMenu = () => {
     // Anim
     const animation = lottieRef.current;
@@ -140,8 +143,10 @@ const Header = () => {
                         {cart.data.length > 0 &&
                           cart.data.map((item) => {
                             const product = mockProducts.data.data.find(
-                              (mock) => mock.id === item.PRODUCT_ID,
+                              (mock) => mock._id === item.PRODUCT_ID,
                             );
+
+                            console.log(product);
 
                             if (!product) return null;
 
@@ -152,7 +157,7 @@ const Header = () => {
                               >
                                 <img
                                   className="size-12 rounded-lg"
-                                  src={product.img}
+                                  src={product.image}
                                   alt={product.title}
                                 />
                                 <div className="flex w-full items-center justify-between">
